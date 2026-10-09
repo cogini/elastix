@@ -51,7 +51,36 @@ defmodule Elastix.Mixfile do
   end
 
   defp aliases do
-    [compile: ["compile --warnings-as-errors"]]
+    [
+      setup: ["deps.get"],
+      compile: ["compile --warnings-as-errors"],
+      quality: [
+        "format --check-formatted",
+        # "credo",
+        "credo --mute-exit-status",
+        # "xref graph --label compile-connected --fail-above 0",
+        # Run `mix deps.clean --unlock --unused` to clean things identified below
+        "deps.unlock --check-unused",
+        # "hex.outdated",
+        "hex.audit",
+        # Waiting on fix for cowlib
+        "deps.audit --ignore-package-names cowlib,mint,hackney",
+        # "sobelow --exit --quiet --skip -i DOS.StringToAtom,Config.HTTPS,Config.HSTS",
+        "sobelow --exit --quiet",
+        "dialyzer --quiet-with-result"
+      ],
+      "quality.ci": [
+        "format --check-formatted",
+        # "deps.unlock --check-unused",
+        # "hex.outdated",
+        # "hex.audit",
+        # Waiting on fix for cowlib
+        "deps.audit --ignore-package-names cowlib,mint,hackney",
+        "credo --mute-exit-status --all"
+        # "sobelow --exit --quiet --skip -i DOS.StringToAtom,Config.HTTPS,Config.HSTS",
+        # "dialyzer --quiet-with-result"
+      ],
+    ]
   end
 
   defp docs do
