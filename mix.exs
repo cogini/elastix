@@ -27,10 +27,10 @@ defmodule Elastix.Mixfile do
 
   defp deps do
     [
-      {:credo, "~> 0.6", only: [:dev, :test]},
-      {:dialyxir, "~> 0.5", only: [:dev, :test], runtime: false},
-      {:ex_doc, ">= 0.0.0", only: :dev, runtime: false},
-      {:mix_test_watch, "~> 0.3", only: [:test, :dev]},
+      {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
+      {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
+      {:ex_doc, "~> 0.40.0", only: :dev, runtime: false},
+      {:mix_test_watch, "~> 1.4", only: [:test, :dev]},
       {:poison, "~> 3.0 or ~> 4.0", optional: true},
       {:httpoison, "~> 1.4"},
       {:retry, "~> 0.8"}
