@@ -27,9 +27,9 @@ defmodule Elastix.Mixfile do
 
   defp deps do
     [
-      {:ex_doc, ">= 0.0.0", only: :dev, runtime: false},
       {:credo, "~> 0.6", only: [:dev, :test]},
       {:dialyxir, "~> 0.5", only: [:dev, :test], runtime: false},
+      {:ex_doc, ">= 0.0.0", only: :dev, runtime: false},
       {:mix_test_watch, "~> 0.3", only: [:test, :dev]},
       {:poison, "~> 3.0 or ~> 4.0", optional: true},
       {:httpoison, "~> 1.4"},
