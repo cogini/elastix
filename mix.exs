@@ -14,8 +14,8 @@ defmodule Elastix.Mixfile do
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       package: package(),
-      deps: deps(),
-      docs: docs()
+      docs: docs(),
+      deps: deps()
     ]
   end
 
