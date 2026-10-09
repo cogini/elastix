@@ -53,7 +53,7 @@ defmodule Elastix.Bulk do
   @doc deprecated: "Use post/4 instead"
   @spec post_to_iolist(binary, list, Keyword.t, Keyword.t) :: HTTP.resp
   def post_to_iolist(elastic_url, lines, options \\ [], query_params \\ []) do
-    Logger.warn("This function is deprecated and will be removed in future releases; use Elastix.Bulk.post/4 instead.")
+    Logger.warning("This function is deprecated and will be removed in future releases; use Elastix.Bulk.post/4 instead.")
     httpoison_options = options[:httpoison_options] || []
     url = HTTP.make_url(elastic_url, make_path(options[:index], options[:type]), query_params)
     HTTP.post(url, Enum.map(lines, fn line -> JSON.encode!(line) <> "\n" end), [], httpoison_options)

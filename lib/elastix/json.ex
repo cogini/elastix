@@ -56,7 +56,7 @@ defmodule Elastix.JSON do
         Elastix.config(:json_options, [])
 
       opts ->
-        Logger.warn(
+        Logger.warning(
           "Using :poison_options is deprecated and might not work in future releases; use :json_options instead."
         )
 
