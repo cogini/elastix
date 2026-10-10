@@ -186,8 +186,9 @@ defmodule Elastix.Document do
   """
   @spec delete_matching(binary, binary, map, Keyword.t) :: HTTP.resp
   def delete_matching(elastic_url, index, %{} = query, query_params \\ []) do
-    url = HTTP.make_url(elastic_url, [index, "_delete_by_query"], query_params)
-    HTTP.post(url, JSON.encode!(query))
+    elastic_url
+    |> HTTP.make_url([index, "_delete_by_query"], query_params)
+    |> HTTP.post(JSON.encode!(query))
   end
 
   @doc """
@@ -202,8 +203,9 @@ defmodule Elastix.Document do
   """
   @spec update(binary(), binary(), binary(), binary(), map(), keyword()) :: HTTP.resp()
   def update(elastic_url, index, type, id, data, query_params \\ []) do
-    url = HTTP.make_url(elastic_url, make_path_old(index, type, query_params, id, "_update"))
-    HTTP.post(url, JSON.encode!(data))
+    elastic_url
+    |> HTTP.make_url(make_path_old(index, type, query_params, id, "_update"))
+    |> HTTP.post(JSON.encode!(data))
   end
 
   @doc """
@@ -224,14 +226,8 @@ defmodule Elastix.Document do
         ) :: HTTP.resp()
   def update_by_query(elastic_url, index_name, query, script, query_params \\ []) do
     elastic_url
-    |> prepare_url([index_name, "_update_by_query"])
-    |> HTTP.append_query_string(query_params)
-    |> HTTP.post(
-      JSON.encode!(%{
-        script: script,
-        query: query
-      })
-    )
+    |> HTTP.make_url([index_name, "_update_by_query"], query_params)
+    |> HTTP.post(JSON.encode!(%{script: script, query: query}))
   end
 
   @doc false

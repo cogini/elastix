@@ -44,10 +44,11 @@ defmodule Elastix.Bulk do
   """
   @spec post_raw(binary(), iodata(), Keyword.t(), Keyword.t()) :: HTTP.resp()
   def post_raw(elastic_url, raw_data, options \\ [], query_params \\ []) do
-    url = HTTP.make_url(elastic_url, make_path(options[:index], options[:type]), query_params)
     headers = [{"Content-Type", "application/x-ndjson"}]
     httpoison_options = options[:httpoison_options] || []
-    HTTP.post(url, raw_data, headers, httpoison_options)
+    elastic_url
+    |> HTTP.make_url(make_path(options[:index], options[:type]), query_params)
+    |> HTTP.post(raw_data, headers, httpoison_options)
   end
 
   @doc deprecated: "Use post/4 instead"
@@ -58,8 +59,10 @@ defmodule Elastix.Bulk do
     )
 
     httpoison_options = options[:httpoison_options] || []
-    url = HTTP.make_url(elastic_url, make_path(options[:index], options[:type]), query_params)
-    HTTP.post(url, Enum.map(lines, fn line -> JSON.encode!(line) <> "\n" end), [], httpoison_options)
+
+    elastic_url
+    |> HTTP.make_url(make_path(options[:index], options[:type]), query_params)
+    |> HTTP.post(Enum.map(lines, fn line -> JSON.encode!(line) <> "\n" end), [], httpoison_options)
   end
 
   @doc false

@@ -21,8 +21,9 @@ defmodule Elastix.Alias do
   """
   @spec post(binary(), [map()]) :: HTTP.resp()
   def post(elastic_url, actions) do
-    url = HTTP.make_url(elastic_url, "_aliases")
-    HTTP.post(url, JSON.encode!(%{actions: actions}))
+    elastic_url
+    |> HTTP.make_url("_aliases")
+    |> HTTP.post(JSON.encode!(%{actions: actions}))
   end
 
   @doc """
@@ -34,7 +35,8 @@ defmodule Elastix.Alias do
   """
   @spec get(binary(), binary()) :: HTTP.resp()
   def get(elastic_url, name \\ "") do
-    prepare_url(elastic_url, ["_alias", name])
+    elastic_url
+    |> HTTP.make_url(["_alias", name])
     |> HTTP.get()
   end
 end
