@@ -52,7 +52,8 @@ defmodule Elastix.Mapping do
   @spec put_path(binary | [binary], binary | map, map | Keyword.t, Keyword.t) :: binary
   def put_path(indexes, type_or_mappings, mappings_or_query_params \\ [], query_params \\ [])
   # Old
-  def put_path(indexes, type, mappings, query_params) when is_list(indexes) and is_binary(type) do
+  def put_path(indexes, type, mappings, query_params)
+      when is_list(indexes) and is_binary(type) do
     indexes = Enum.join(indexes, ",")
     put_path(indexes, type, mappings, query_params)
   end
@@ -102,12 +103,15 @@ defmodule Elastix.Mapping do
   def get_path(index, [], []) when is_binary(index) do
     "/#{index}/_mapping"
   end
-  def get_path(index, [value | _rest] = query_params, []) when is_binary(index) and is_tuple(value) do
+
+  def get_path(index, [value | _rest] = query_params, [])
+      when is_binary(index) and is_tuple(value) do
     HTTP.add_query_params("/#{index}/_mapping", query_params)
   end
 
   # Old: @spec get(binary | [binary], binary | [binary], Keyword.t) :: binary
-  def get_path(indexes, [value | _rest] = types, query_params) when is_list(indexes) and is_binary(value) do
+  def get_path(indexes, [value | _rest] = types, query_params)
+      when is_list(indexes) and is_binary(value) do
     indexes = Enum.join(indexes, ",")
     types = Enum.join(types, ",")
     HTTP.add_query_params("/#{indexes}/_mapping/#{types}", query_params)
@@ -117,7 +121,9 @@ defmodule Elastix.Mapping do
     indexes = Enum.join(indexes, ",")
     HTTP.add_query_params("/#{indexes}/_mapping/#{type}", query_params)
   end
-  def get_path(index, [value | _rest] = types, query_params) when is_binary(index) and is_binary(value) do
+
+  def get_path(index, [value | _rest] = types, query_params)
+      when is_binary(index) and is_binary(value) do
     types = Enum.join(types, ",")
     HTTP.add_query_params("/#{index}/_mapping/#{types}", query_params)
   end
