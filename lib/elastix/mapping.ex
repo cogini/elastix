@@ -33,7 +33,13 @@ defmodule Elastix.Mapping do
   # without mapping types using the same natural function name.
   @spec put(binary(), binary() | [binary()], binary() | map(), map() | keyword(), keyword()) :: HTTP.resp()
 
-  def put(elastic_url, index, type_or_mappings, mappings_or_query_params \\ [], query_params \\ [])
+  def put(
+        elastic_url,
+        index,
+        type_or_mappings,
+        mappings_or_query_params \\ [],
+        query_params \\ []
+      )
 
   # Old: @spec put(binary, binary | [binary], binary, map, Keyword.t) :: HTTP.resp
   def put(elastic_url, indexes, type, mappings, query_params) when is_binary(type) do
