@@ -71,7 +71,7 @@ defmodule Elastix.Snapshot.Snapshot do
   @doc """
   Restore previously created snapshot.
   """
-  @spec restore(binary, binary, binary, map, Keyword.t) :: HTTP.resp
+  @spec restore(binary(), binary(), binary(), map(), Keyword.t()) :: HTTP.resp()
   def restore(elastic_url, repo, snapshot, data \\ %{}, options \\ []) do
     url = HTTP.make_url(elastic_url, [make_path(repo, snapshot), "_restore"])
     HTTP.post(url, JSON.encode!(data), Keyword.get(options, :httpoison_options, []))
@@ -92,7 +92,7 @@ defmodule Elastix.Snapshot.Snapshot do
       iex> Elastix.Snapshot.status(elastic_url, repository, snapshot)
 
   """
-  @spec status(binary, binary, binary) :: HTTP.resp
+  @spec status(binary(), binary(), binary()) :: HTTP.resp()
   def status(elastic_url, repo \\ "", snapshot \\ "") do
     url = HTTP.make_url(elastic_url, [make_path(repo, snapshot), "_status"])
     HTTP.get(url, [], Keyword.get(options, :httpoison_options, []))
@@ -158,7 +158,7 @@ defmodule Elastix.Snapshot.Snapshot do
 
   """
 
-  @spec get(binary, binary, binary) :: HTTP.resp
+  @spec get(binary, binary, binary) :: HTTP.resp()
   def get(elastic_url, repo_name \\ "", snapshot_name \\ "_all", options \\ []) do
     url = HTTP.make_url(elastic_url, make_path(repo_name, snapshot_name))
     HTTP.get(url, [], Keyword.get(options, :httpoison_options, []))

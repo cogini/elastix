@@ -82,7 +82,7 @@ defmodule Elastix.Search do
       {:ok, %HTTPoison.Response{...}}
 
   """
-  @spec scroll(binary, map, Keyword.t) :: HTTP.resp
+  @spec scroll(binary(), map(), keyword()) :: HTTP.resp()
   def scroll(elastic_url, scroll_params, httpoison_options \\ []) do
     url = HTTP.make_url(elastic_url, "_search/scroll")
     HTTP.post(url, JSON.encode!(scroll_params), [], httpoison_options)

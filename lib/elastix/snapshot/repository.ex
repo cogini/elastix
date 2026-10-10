@@ -61,7 +61,7 @@ defmodule Elastix.Snapshot.Repository do
       }
 
   """
-  @spec register(binary, binary, map, Keyword.t) :: HTTP.resp
+  @spec register(binary(), binary(), map(), keyword()) :: HTTP.resp()
   def register(elastic_url, repo, config, query_params \\ []) do
     url = HTTP.make_url(elastic_url, make_path(repo), query_params)
     HTTP.put(url, JSON.encode!(config))
@@ -101,7 +101,7 @@ defmodule Elastix.Snapshot.Repository do
       }
 
   """
-  @spec verify(binary, binary) :: HTTP.resp
+  @spec verify(binary(), binary()) :: HTTP.resp()
   def verify(elastic_url, repo) do
     url = HTTP.make_url(elastic_url, [make_path(repo), "_verify"])
     HTTP.post(url, "")
@@ -193,7 +193,7 @@ defmodule Elastix.Snapshot.Repository do
 
 
   """
-  @spec get(binary, binary) :: HTTP.resp
+  @spec get(binary(), binary()) :: HTTP.resp()
   def get(elastic_url, repo \\ "_all") do
     url = HTTP.make_url(elastic_url, make_path(repo))
     HTTP.get(url)

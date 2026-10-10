@@ -78,7 +78,7 @@ defmodule Elastix.Document do
   #     {:ok, %HTTPoison.Response{...}}
   # """
   @doc deprecated: "Use index/6 instead"
-  @spec index_new(binary, binary, binary, map, Keyword.t) :: HTTP.resp
+  @spec index_new(binary(), binary(), binary(), map(), keyword()) :: HTTP.resp()
   def index_new(elastic_url, index, type, data, query_params \\ []) do
     # TODO: deprecation warning
     url = HTTP.make_url(elastic_url, make_path_old(index, type, query_params))
@@ -101,7 +101,7 @@ defmodule Elastix.Document do
       {:ok, %HTTPoison.Response{...}}
 
   """
-  @spec get(binary, binary, binary, Keyword.t | binary, Keyword.t) :: HTTP.resp
+  @spec get(binary(), binary(), binary(), keyword() | binary(), keyword()) :: HTTP.resp()
 
   def get(elastic_url, index, id_or_type, query_params_or_id \\ [], query_params \\ [])
 
@@ -124,7 +124,7 @@ defmodule Elastix.Document do
   [Multi Get API](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-multi-get.html).
   """
 
-  @spec mget(binary, map, binary | nil, binary | Keyword.t, Keyword.t) :: HTTP.resp
+  @spec mget(binary(), map(), binary() | nil, binary() | keyword(), keyword()) :: HTTP.resp()
   # Old: @spec mget(binary, map, binary | nil, binary | nil, Keyword.t) :: HTTP.resp
 
   def mget(

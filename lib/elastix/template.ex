@@ -58,7 +58,7 @@ defmodule Elastix.Template do
       iex> Elastix.Template.put("http://localhost:9200", "logstash", template)
       {:ok, %HTTPoison.Response{...}}
   """
-  @spec put(binary, binary, binary | term, Keyword.t) :: HTTP.resp
+  @spec put(binary(), binary(), binary() | term(), keyword()) :: HTTP.resp()
   def put(elastic_url, template, data, query_params \\ [])
 
   def put(elastic_url, template, data, query_params) when is_binary(data) do
