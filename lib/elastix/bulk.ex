@@ -22,7 +22,7 @@ defmodule Elastix.Bulk do
       {:ok, %HTTPoison.Response{...}}
 
   """
-  @spec post(binary, list, Keyword.t, Keyword.t) :: HTTP.resp
+  @spec post(binary, list, Keyword.t(), Keyword.t()) :: HTTP.resp()
   def post(elastic_url, operations, options \\ [], query_params \\ []) do
     data = for op <- operations, do: [JSON.encode!(op), "\n"]
     post_raw(elastic_url, data, options, query_params)

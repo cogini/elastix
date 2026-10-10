@@ -164,7 +164,7 @@ defmodule Elastix.Document do
       {:ok, %HTTPoison.Response{...}}
 
   """
-  @spec delete(binary, binary, binary, Keyword.t | binary, Keyword.t) :: HTTP.resp
+  @spec delete(binary(), binary(), binary(), keyword() | binary(), keyword()) :: HTTP.resp()
 
   def delete(elastic_url, index, type_or_id, id_or_query_params \\ [], query_params \\ [])
 
@@ -184,7 +184,7 @@ defmodule Elastix.Document do
   Delete the documents matching the given `query` using the
   [Delete By Query API](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-delete-by-query.html).
   """
-  @spec delete_matching(binary, binary, map, Keyword.t) :: HTTP.resp
+  @spec delete_matching(binary(), binary(), map(), keyword()) :: HTTP.resp()
   def delete_matching(elastic_url, index, %{} = query, query_params \\ []) do
     elastic_url
     |> HTTP.make_url([index, "_delete_by_query"], query_params)
@@ -218,12 +218,6 @@ defmodule Elastix.Document do
       {:ok, %HTTPoison.Response{...}}
   """
   @spec update_by_query(binary(), binary(), map(), map(), keyword()) :: HTTP.resp()
-          elastic_url :: String.t(),
-          index :: String.t(),
-          query :: map,
-          script :: map,
-          query_params :: Keyword.t()
-        ) :: HTTP.resp()
   def update_by_query(elastic_url, index_name, query, script, query_params \\ []) do
     elastic_url
     |> HTTP.make_url([index_name, "_update_by_query"], query_params)
@@ -231,7 +225,7 @@ defmodule Elastix.Document do
   end
 
   @doc false
-  @spec make_path(binary, map) :: binary
+  @spec make_path(binary(), map()) :: binary()
   def make_path(index, metadata \\ %{})
   def make_path(index, %{id: id}), do: "/#{index}/_doc/#{id}"
   def make_path(index, %{_id: id}), do: "/#{index}/_doc/#{id}"

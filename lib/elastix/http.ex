@@ -8,7 +8,7 @@ defmodule Elastix.HTTP do
   @type resp :: {:ok, HTTPoison.Response.t()} | {:error, HTTPoison.Error.t()}
 
   @doc "Create URL from base URL, path components and query params."
-  @spec make_url(binary, binary | [binary], Enum.t) :: binary
+  @spec make_url(binary(), binary() | [binary()], Enum.t()) :: binary()
   def make_url(url, path, query_params \\ [])
 
   def make_url(url, path, query_params) when is_list(path) do

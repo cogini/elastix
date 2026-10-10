@@ -16,7 +16,7 @@ defmodule Elastix.Index do
       {:ok, %HTTPoison.Response{...}}
 
   """
-  @spec create(binary, binary, map) :: HTTP.resp
+  @spec create(binary(), binary(), map()) :: HTTP.resp()
   def create(elastic_url, index, data) do
     url = HTTP.make_url(elastic_url, index)
     HTTP.put(url, JSON.encode!(data))
@@ -31,7 +31,7 @@ defmodule Elastix.Index do
       {:ok, %HTTPoison.Response{...}}
 
   """
-  @spec delete(binary, binary) :: HTTP.resp
+  @spec delete(binary(), binary()) :: HTTP.resp()
   def delete(elastic_url, index) do
     url = HTTP.make_url(elastic_url, index)
     HTTP.delete(url)
@@ -46,7 +46,7 @@ defmodule Elastix.Index do
       {:ok, %HTTPoison.Response{...}}
 
   """
-  @spec get(binary, binary) :: HTTP.resp
+  @spec get(binary(), binary()) :: HTTP.resp()
   def get(elastic_url, index) do
     url = HTTP.make_url(elastic_url, index)
     HTTP.get(url)
@@ -69,7 +69,7 @@ defmodule Elastix.Index do
       {:ok, true}
 
   """
-  @spec exists?(binary, binary) :: {:ok, boolean} | {:error, HTTPoison.Error.t}
+  @spec exists?(binary(), binary()) :: {:ok, boolean()} | {:error, HTTPoison.Error.t()}
   def exists?(elastic_url, index) do
     url = HTTP.make_url(elastic_url, index)
 
@@ -91,7 +91,7 @@ defmodule Elastix.Index do
       {:ok, %HTTPoison.Response{...}}
 
   """
-  @spec refresh(binary, binary) :: HTTP.resp
+  @spec refresh(binary(), binary()) :: HTTP.resp()
   def refresh(elastic_url, index) do
     url = HTTP.make_url(elastic_url, [index, "_refresh"])
     HTTP.post(url, "")
