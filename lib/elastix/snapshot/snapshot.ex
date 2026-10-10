@@ -92,8 +92,8 @@ defmodule Elastix.Snapshot.Snapshot do
       iex> Elastix.Snapshot.status(elastic_url, repository, snapshot)
 
   """
-  @spec status(binary(), binary(), binary()) :: HTTP.resp()
-  def status(elastic_url, repo \\ "", snapshot \\ "") do
+  @spec status(binary(), binary(), binary(), keyword()) :: HTTP.resp()
+  def status(elastic_url, repo \\ "", snapshot \\ "", options \\ []) do
     url = HTTP.make_url(elastic_url, [make_path(repo, snapshot), "_status"])
     HTTP.get(url, [], Keyword.get(options, :httpoison_options, []))
   end
