@@ -100,8 +100,9 @@ defmodule Elastix.Mapping do
   # New: @spec get(binary, binary, Keyword.t, Keyword.t) :: HTTP.resp
   # Old: @spec get(binary, binary | [binary], binary | [binary], Keyword.t) :: HTTP.resp
   def get(elastic_url, indexes, types_or_query_params \\ [], query_params \\ []) do
-    url = HTTP.make_url(elastic_url, get_path(indexes, types_or_query_params, query_params))
-    HTTP.get(url)
+    elastic_url
+    |> HTTP.make_url(get_path(indexes, types_or_query_params, query_params))
+    |> HTTP.get()
   end
 
   @spec get_path(binary() | [binary()], binary() | [binary()] | keyword(), keyword()) :: binary()
