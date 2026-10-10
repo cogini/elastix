@@ -55,8 +55,15 @@ defmodule Elastix.Snapshot.Snapshot do
 
   """
 
-  @spec create(binary, binary, binary, map, Keyword.t, Keyword.t) :: HTTP.resp
-  def create(elastic_url, repo, snapshot, config \\ %{}, query_params \\ [], options \\ []) do
+  @spec create(binary, binary, binary, map, Keyword.t(), Keyword.t()) :: HTTP.resp()
+  def create(
+        elastic_url,
+        repo,
+        snapshot,
+        config \\ %{},
+        query_params \\ [],
+        options \\ []
+      ) do
     url = HTTP.make_url(elastic_url, make_path(repo, snapshot), query_params)
     HTTP.put(url, JSON.encode!(config), Keyword.get(options, :httpoison_options, []))
   end

@@ -1,5 +1,4 @@
 defmodule Elastix.JSON do
-
   require Logger
 
   defmodule Codec do

@@ -54,7 +54,9 @@ defmodule Elastix.Snapshot.RepositoryTest do
 
   describe "verifying a repository" do
     test "a registered but unverified repository is manually verified" do
-      {:ok, response} = Repository.register(@test_url, @repo_2, @repo_config, verify: false)
+      {:ok, response} =
+        Repository.register(@test_url, @repo_2, @repo_config, verify: false)
+
       assert response.status_code == 200
 
       {:ok, response} = Repository.verify(@test_url, @repo_2)
@@ -103,7 +105,8 @@ defmodule Elastix.Snapshot.RepositoryTest do
     end
 
     test "references to the location where snapshots are stored are removed" do
-      assert {:ok, %{status_code: 200}} = Repository.register(@test_url, @repo_1, @repo_config)
+      assert {:ok, %{status_code: 200}} =
+               Repository.register(@test_url, @repo_1, @repo_config)
 
       assert {:ok, %{status_code: 200}} = Repository.delete(@test_url, @repo_1)
       assert {:ok, %{status_code: 404}} = Repository.get(@test_url, @repo_1)

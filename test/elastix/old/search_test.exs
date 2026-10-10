@@ -32,23 +32,22 @@ defmodule Elastix.Old.SearchTest do
 
   test "make_path should make path from id and url" do
     if @old do
-
-    path = Search.make_path(@test_index, ["tweet", "product"], ttl: "1d", timeout: 123)
-    assert path == "/#{@test_index}/tweet,product/_search?ttl=1d&timeout=123"
+      path = Search.make_path(@test_index, ["tweet", "product"], ttl: "1d", timeout: 123)
+      assert path == "/#{@test_index}/tweet,product/_search?ttl=1d&timeout=123"
     end
   end
 
   test "make_path should make path that can interchange api type" do
     if @old do
-    path =
-      Search.make_path(
-        @test_index,
-        ["tweet", "product"],
-        [ttl: "1d", timeout: 123],
-        "_count"
-      )
+      path =
+        Search.make_path(
+          @test_index,
+          ["tweet", "product"],
+          [ttl: "1d", timeout: 123],
+          "_count"
+        )
 
-    assert path == "/#{@test_index}/tweet,product/_count?ttl=1d&timeout=123"
+      assert path == "/#{@test_index}/tweet,product/_count?ttl=1d&timeout=123"
     end
   end
 

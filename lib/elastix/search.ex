@@ -28,7 +28,12 @@ defmodule Elastix.Search do
       {:ok, %HTTPoison.Response{...}}
 
   """
-  @spec search(elastic_url :: String.t(), index :: String.t() | list, types :: list, data :: map | list) :: HTTP.resp()
+  @spec search(
+          elastic_url :: String.t(),
+          index :: String.t() | list,
+          types :: list,
+          data :: map | list
+        ) :: HTTP.resp()
   def search(elastic_url, index, types, query) do
     search(elastic_url, index, types, query, [])
   end
@@ -39,23 +44,25 @@ defmodule Elastix.Search do
   See [`HTTPoison.request/5`](https://hexdocs.pm/httpoison/HTTPoison.html#request/5) for options.
   """
   @spec search(
-          elastic_url :: String.t(), 
-          index :: String.t(), 
-          types :: list, 
-          data :: map | list, 
-          query_params :: Keyword.t(), 
+          elastic_url :: String.t(),
+          index :: String.t(),
+          types :: list,
+          data :: map | list,
+          query_params :: Keyword.t(),
           options :: Keyword.t()
         ) :: HTTP.resp()
   def search(elastic_url, index, types, query, query_params, httpoison_options \\ [])
 
-  def search(elastic_url, index, types, query, query_params, httpoison_options) when is_list(query) do
+  def search(elastic_url, index, types, query, query_params, httpoison_options)
+      when is_list(query) do
     url = HTTP.make_url(elastic_url, make_path(index, types, "_msearch"), query_params)
     data = for q <- query, do: [JSON.encode!(q), "\n"]
     headers = [{"Content-Type", "application/x-ndjson"}]
     HTTP.post(url, data, headers, httpoison_options)
   end
 
-  def search(elastic_url, index, types, query, query_params, httpoison_options) when is_map(query) do
+  def search(elastic_url, index, types, query, query_params, httpoison_options)
+      when is_map(query) do
     url = HTTP.make_url(elastic_url, make_path(index, types), query_params)
     HTTP.post(url, JSON.encode!(query), [], httpoison_options)
   end
@@ -112,6 +119,7 @@ defmodule Elastix.Search do
   @spec make_path(binary, [binary], binary) :: binary
   def make_path(index, types, api_type \\ "_search")
   def make_path(index, [], api_type), do: "/#{index}/#{api_type}"
+
   def make_path(index, types, api_type) do
     types = Enum.join(types, ",")
     "/#{index}/#{types}/#{api_type}"

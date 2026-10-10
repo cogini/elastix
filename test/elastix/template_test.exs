@@ -1,5 +1,4 @@
 defmodule Elastix.TemplateTest do
-
   use ExUnit.Case
 
   alias Elastix.Template
@@ -91,6 +90,4 @@ defmodule Elastix.TemplateTest do
 
     assert {:ok, true} == Template.exists?(@test_url, @template)
   end
-
 end
-

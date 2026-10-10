@@ -10,9 +10,11 @@ defmodule Elastix.HTTP do
   @doc "Create URL from base URL, path components and query params."
   @spec make_url(binary, binary | [binary], Enum.t) :: binary
   def make_url(url, path, query_params \\ [])
+
   def make_url(url, path, query_params) when is_list(path) do
     make_url(url, Path.join(path), query_params)
   end
+
   def make_url(url, path, query_params) do
     URI.merge(url, add_query_params(path, query_params)) |> to_string
   end
@@ -53,14 +55,17 @@ defmodule Elastix.HTTP do
   @doc false
   @spec process_response_body(binary) :: term
   def process_response_body(""), do: ""
+
   def process_response_body(body) when is_binary(body) do
     case JSON.decode(body) do
       {:error, _} ->
         body
+
       {:ok, decoded} ->
         decoded
     end
   end
+
   def process_response_body(body) do
     process_response_body(to_string(body))
   end

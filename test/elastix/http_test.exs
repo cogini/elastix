@@ -28,7 +28,9 @@ defmodule Elastix.HTTPTest do
     assert HTTP.make_url(url, ["foo", "bar"]) == "#{url}/foo/bar"
     assert HTTP.make_url(url, "/foo") == "#{url}/foo"
     assert HTTP.make_url(url, "/foo", this: true) == "#{url}/foo?this=true"
-    assert HTTP.make_url(url, "/foo", %{biz: :baz, hello: 1}) == "#{url}/foo?biz=baz&hello=1"
+
+    assert HTTP.make_url(url, "/foo", %{biz: :baz, hello: 1}) ==
+             "#{url}/foo?biz=baz&hello=1"
   end
 
   test "add_content_type_header/1" do
@@ -41,6 +43,7 @@ defmodule Elastix.HTTPTest do
 
   test "post should respond with 400", %{version: version} do
     {_, response} = HTTP.post(@test_url, [])
+
     if version >= 6.0 do
       assert response.status_code == 405
     else
@@ -50,6 +53,7 @@ defmodule Elastix.HTTPTest do
 
   test "put should respond with 400", %{version: version} do
     {_, response} = HTTP.put(@test_url, [])
+
     if version >= 6.0 do
       assert response.status_code == 405
     else
@@ -87,10 +91,11 @@ defmodule Elastix.HTTPTest do
 
     test "using :poison_options logs a deprecation warning" do
       assert capture_log(fn ->
-        body = "{\"some\":\"json\"}"
-        Application.put_env(:elastix, :poison_options, keys: :atoms)
-        %{some: "json"} = HTTP.process_response_body(body)
-      end) =~ "Using :poison_options is deprecated and might not work in future releases; use :json_options instead"
+               body = "{\"some\":\"json\"}"
+               Application.put_env(:elastix, :poison_options, keys: :atoms)
+               %{some: "json"} = HTTP.process_response_body(body)
+             end) =~
+               "Using :poison_options is deprecated and might not work in future releases; use :json_options instead"
     end
 
     @tag capture_log: true
@@ -141,5 +146,4 @@ defmodule Elastix.HTTPTest do
   def return_headers(_, %HTTPoison.Request{headers: headers}, _, _, _, _) do
     headers
   end
-
 end

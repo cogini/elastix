@@ -12,7 +12,10 @@ defmodule Elastix.Old.Snapshot.RepositoryTest do
   alias Elastix.Snapshot.Repository
 
   @test_url Elastix.config(:test_url)
-  @test_repository_config %{"type" => "fs", "settings" => %{"location" => "/tmp/elastix/backups"}}
+  @test_repository_config %{
+    "type" => "fs",
+    "settings" => %{"location" => "/tmp/elastix/backups"}
+  }
 
   @old false
 
@@ -27,10 +30,10 @@ defmodule Elastix.Old.Snapshot.RepositoryTest do
 
   describe "constructing paths" do
     if @old do
-    test "make_path should make url from repository name and query params" do
-      assert Repository.make_path("elastix_test_unverified_backup", verify: false) ==
-               "/_snapshot/elastix_test_unverified_backup?verify=false"
-    end
+      test "make_path should make url from repository name and query params" do
+        assert Repository.make_path("elastix_test_unverified_backup", verify: false) ==
+                 "/_snapshot/elastix_test_unverified_backup?verify=false"
+      end
     end
 
     test "make_path should make url from repository_name" do

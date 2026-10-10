@@ -1,5 +1,4 @@
 defmodule Elastix.Old.DocumentTest do
-  require Logger
   use ExUnit.Case
   alias Elastix.{Document, Index, Search}
 
@@ -29,20 +28,20 @@ defmodule Elastix.Old.DocumentTest do
 
   test "make_path should make url from index name, type, query params, id, and suffix" do
     if @old do
-    assert Document.make_path(
-             @test_index,
-             "tweet",
-             [version: 34, ttl: "1d"],
-             2,
-             "_update"
-           ) == "/#{@test_index}/tweet/2/_update?version=34&ttl=1d"
+      assert Document.make_path(
+               @test_index,
+               "tweet",
+               [version: 34, ttl: "1d"],
+               2,
+               "_update"
+             ) == "/#{@test_index}/tweet/2/_update?version=34&ttl=1d"
     end
   end
 
   test "make_path without and id should make url from index name, type, and query params" do
     if @old do
-    assert Document.make_path(@test_index, "tweet", version: 34, ttl: "1d") ==
-             "/#{@test_index}/tweet?version=34&ttl=1d"
+      assert Document.make_path(@test_index, "tweet", version: 34, ttl: "1d") ==
+               "/#{@test_index}/tweet?version=34&ttl=1d"
     end
   end
 
@@ -53,6 +52,7 @@ defmodule Elastix.Old.DocumentTest do
     assert response.body["_id"] == "1"
     assert response.body["_index"] == @test_index
     assert response.body["_type"] == "message"
+
     if version >= 6.0 do
       assert response.body["result"] == "created"
     else
@@ -67,6 +67,7 @@ defmodule Elastix.Old.DocumentTest do
     assert response.body["_id"]
     assert response.body["_index"] == @test_index
     assert response.body["_type"] == "message"
+
     if version >= 6.0 do
       assert response.body["result"] == "created"
     else

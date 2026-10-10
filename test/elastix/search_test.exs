@@ -1,8 +1,10 @@
 defmodule Elastix.SearchTest do
   use ExUnit.Case
+
   alias Elastix.Search
   alias Elastix.Index
   alias Elastix.Document
+  alias Elastix.HTTP.Response
 
   @test_url Elastix.config(:test_url)
   @test_index Elastix.config(:test_index)
@@ -80,7 +82,6 @@ defmodule Elastix.SearchTest do
   end
 
   describe "scroll/3" do
-
     test "can scroll through results" do
       for i <- 1..10 do
         Document.index(@test_url, @test_index, @document_data, %{id: i}, refresh: true)
@@ -88,10 +89,12 @@ defmodule Elastix.SearchTest do
 
       {:ok, %{status_code: 200, body: body}} =
         Search.search(@test_url, @test_index, [], @scroll_query, scroll: "1m")
+
       assert length(body["hits"]["hits"]) === 5
 
       {:ok, %{status_code: 200, body: body}} =
         Search.scroll(@test_url, %{scroll: "1m", scroll_id: body["_scroll_id"]})
+
       assert length(body["hits"]["hits"]) === 5
 
       {:ok, %{status_code: 200, body: body}} =
@@ -99,7 +102,6 @@ defmodule Elastix.SearchTest do
 
       assert length(body["hits"]["hits"]) === 0
     end
-
   end
 
   test "count returns status 200" do

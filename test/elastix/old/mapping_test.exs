@@ -46,27 +46,31 @@ defmodule Elastix.Old.MappingTest do
     %HTTPoison.Response{body: %{"version" => %{"number" => v}}, status_code: 200} =
       Elastix.HTTP.get!(@test_url)
 
-    v |> String.split([".", "-"]) |> Enum.take(3) |> Enum.map(&String.to_integer/1)
+    v
+    |> String.split([".", "-"])
+    |> Enum.take(3)
+    |> Enum.map(&String.to_integer/1)
     |> List.to_tuple()
   end
 
   test "make_path should make url from index names, types, and query params" do
     if @old do
-    assert Mapping.make_path([@test_index], ["tweet"], version: 34, ttl: "1d") ==
-             "/#{@test_index}/_mapping/tweet?version=34&ttl=1d"
+      assert Mapping.make_path([@test_index], ["tweet"], version: 34, ttl: "1d") ==
+               "/#{@test_index}/_mapping/tweet?version=34&ttl=1d"
     end
   end
 
   test "make_all_path should make url from types, and query params" do
     if @old do
-    assert Mapping.make_all_path(["tweet"], version: 34, ttl: "1d") ==
-             "/_mapping/tweet?version=34&ttl=1d"
+      assert Mapping.make_all_path(["tweet"], version: 34, ttl: "1d") ==
+               "/_mapping/tweet?version=34&ttl=1d"
     end
   end
 
   test "make_all_path should make url from query params" do
     if @old do
-    assert Mapping.make_all_path(version: 34, ttl: "1d") == "/_mapping?version=34&ttl=1d"
+      assert Mapping.make_all_path(version: 34, ttl: "1d") ==
+               "/_mapping?version=34&ttl=1d"
     end
   end
 

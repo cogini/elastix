@@ -16,15 +16,15 @@ defmodule Elastix.Old.HTTPTest do
 
   test "prepare_url/2 should concat url with path" do
     if @old do
-    assert HTTP.prepare_url("http://127.0.0.1:9200/", "/some_path") ==
-             "http://127.0.0.1:9200/some_path"
+      assert HTTP.prepare_url("http://127.0.0.1:9200/", "/some_path") ==
+               "http://127.0.0.1:9200/some_path"
     end
   end
 
   test "prepare_url/2 should concat url with a list of path parts" do
     if @old do
-    assert HTTP.prepare_url("http://127.0.0.1:9200/", ["/some/", "/path/"]) ==
-             "http://127.0.0.1:9200/some/path"
+      assert HTTP.prepare_url("http://127.0.0.1:9200/", ["/some/", "/path/"]) ==
+               "http://127.0.0.1:9200/some/path"
     end
   end
 
@@ -35,6 +35,7 @@ defmodule Elastix.Old.HTTPTest do
 
   test "post should respond with 400", %{version: version} do
     {_, response} = HTTP.post(@test_url, [])
+
     if version >= 6.0 do
       assert response.status_code == 405
     else
@@ -44,6 +45,7 @@ defmodule Elastix.Old.HTTPTest do
 
   test "put should respond with 400", %{version: version} do
     {_, response} = HTTP.put(@test_url, [])
+
     if version >= 6.0 do
       assert response.status_code == 405
     else

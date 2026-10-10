@@ -1,8 +1,10 @@
 defmodule Elastix.Old.BulkTest do
   use ExUnit.Case
+
   alias Elastix.Index
   alias Elastix.Bulk
   alias Elastix.Document
+
   @old false
 
   @test_url Elastix.config(:test_url)
@@ -16,33 +18,39 @@ defmodule Elastix.Old.BulkTest do
 
   test "make_path should make url from index name, type, and query params" do
     if @old do
-    assert Bulk.make_path(@test_index, "tweet", version: 34, ttl: "1d") ==
-             "/#{@test_index}/tweet/_bulk?version=34&ttl=1d"
+      assert Bulk.make_path(@test_index, "tweet", version: 34, ttl: "1d") ==
+               "/#{@test_index}/tweet/_bulk?version=34&ttl=1d"
     end
   end
 
   test "make_path should make url from index name and query params" do
     if @old do
-    assert Bulk.make_path(@test_index, nil, version: 34, ttl: "1d") ==
-             "/#{@test_index}/_bulk?version=34&ttl=1d"
+      assert Bulk.make_path(@test_index, nil, version: 34, ttl: "1d") ==
+               "/#{@test_index}/_bulk?version=34&ttl=1d"
     end
   end
 
   test "make_path should make url from query params" do
     if @old do
-    assert Bulk.make_path(nil, nil, version: 34, ttl: "1d") == "/_bulk?version=34&ttl=1d"
+      assert Bulk.make_path(nil, nil, version: 34, ttl: "1d") ==
+               "/_bulk?version=34&ttl=1d"
     end
   end
 
   test "bulk accepts httpoison options" do
     lines = [
-        %{index: %{_id: "1"}},
-        %{field: "value1"},
-        %{index: %{_id: "2"}},
-        %{field: "value2"}
-      ]
+      %{index: %{_id: "1"}},
+      %{field: "value1"},
+      %{index: %{_id: "2"}},
+      %{field: "value2"}
+    ]
+
     {:error, %HTTPoison.Error{reason: :timeout}} =
-      Bulk.post @test_url, lines, index: @test_index, type: "message", httpoison_options: [recv_timeout: 0]
+      Bulk.post(@test_url, lines,
+        index: @test_index,
+        type: "message",
+        httpoison_options: [recv_timeout: 0]
+      )
   end
 
   describe "test bulks with index and type in URL" do

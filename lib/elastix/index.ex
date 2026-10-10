@@ -72,6 +72,7 @@ defmodule Elastix.Index do
   @spec exists?(binary, binary) :: {:ok, boolean} | {:error, HTTPoison.Error.t}
   def exists?(elastic_url, index) do
     url = HTTP.make_url(elastic_url, index)
+
     case HTTP.head(url) do
       {:ok, %{status_code: 200}} -> {:ok, true}
       {:ok, %{status_code: 404}} -> {:ok, false}

@@ -38,16 +38,27 @@ defmodule Elastix.Document do
 
   """
   # New: @spec index(binary, binary, map | binary, map | binary, Keyword.t) :: HTTP.resp
-  def index(elastic_url, index, data_or_type, metadata_or_id \\ %{}, data_or_query_params \\ [], query_params \\ [])
+  def index(
+        elastic_url,
+        index,
+        data_or_type,
+        metadata_or_id \\ %{},
+        data_or_query_params \\ [],
+        query_params \\ []
+      )
 
   # New: @spec index(binary, binary, binary | map, map, Keyword.t) :: HTTP.resp
-  def index(elastic_url, index, data, %{id: _} = metadata, query_params, _unused) when is_map(metadata) do
+  def index(elastic_url, index, data, %{id: _} = metadata, query_params, _unused)
+      when is_map(metadata) do
     url = HTTP.make_url(elastic_url, make_path(index, metadata), query_params)
     HTTP.put(url, JSON.encode!(data))
   end
-  def index(elastic_url, index, data, metadata, query_params, _unused) when is_map(metadata) do
+
+  def index(elastic_url, index, data, metadata, query_params, _unused)
+      when is_map(metadata) do
     url = HTTP.make_url(elastic_url, make_path(index, metadata), query_params)
-    HTTP.post(url, JSON.encode!(data)) # Use post to automatically assign id when not specified
+    # Use post to automatically assign id when not specified
+    HTTP.post(url, JSON.encode!(data))
   end
 
   # Old: @spec index(binary, binary, binary, binary, map, Keyword.t) :: HTTP.resp
@@ -107,7 +118,6 @@ defmodule Elastix.Document do
     HTTP.get(url)
   end
 
-
   @doc """
   Get multiple documents with the mget API.
 
@@ -117,12 +127,19 @@ defmodule Elastix.Document do
   @spec mget(binary, map, binary | nil, binary | Keyword.t, Keyword.t) :: HTTP.resp
   # Old: @spec mget(binary, map, binary | nil, binary | nil, Keyword.t) :: HTTP.resp
 
-  def mget(elastic_url, query, index \\ nil, query_params_or_type \\ [], query_params \\ [])
+  def mget(
+        elastic_url,
+        query,
+        index \\ nil,
+        query_params_or_type \\ [],
+        query_params \\ []
+      )
 
   # New API
   def mget(elastic_url, query, nil, query_params, _unused) when is_list(query_params) do
     do_mget(elastic_url, query, ["_mget"], query_params)
   end
+
   def mget(elastic_url, query, index, query_params, _unused) when is_list(query_params) do
     do_mget(elastic_url, query, [index, "_mget"], query_params)
   end
@@ -157,7 +174,8 @@ defmodule Elastix.Document do
   end
 
   # Old: @spec delete(binary, binary, binary, binary, Keyword.t) :: HTTP.resp
-  def delete(elastic_url, index, type, id, query_params) when is_binary(id) or is_integer(id) do
+  def delete(elastic_url, index, type, id, query_params)
+      when is_binary(id) or is_integer(id) do
     url = HTTP.make_url(elastic_url, make_path_old(index, type, query_params, id))
     HTTP.delete(url)
   end
@@ -230,11 +248,12 @@ defmodule Elastix.Document do
 
   @doc false
   def make_path_old(index, type, query_params, id, suffix \\ nil)
+
   def make_path_old(index, type, query_params, id, nil) do
     HTTP.add_query_params("/#{index}/#{type}/#{id}", query_params)
   end
+
   def make_path_old(index, type, query_params, id, suffix) do
     HTTP.add_query_params("/#{index}/#{type}/#{id}/#{suffix}", query_params)
   end
-
 end

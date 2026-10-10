@@ -1,6 +1,6 @@
 defmodule Elastix.DocumentTest do
-  require Logger
   use ExUnit.Case
+
   alias Elastix.{Document, Index, Search}
   alias Elastix.HTTP
 
@@ -21,7 +21,6 @@ defmodule Elastix.DocumentTest do
     {:ok, version: version}
   end
 
-
   setup do
     Index.delete(@test_url, @test_index)
 
@@ -30,13 +29,19 @@ defmodule Elastix.DocumentTest do
 
   describe "make_path/5" do
     test "makes path from index name, type, query params, id, and suffix" do
-      assert Document.make_path_old(@test_index, "tweet", [version: 34, ttl: "1d"], 2, "_update") ==
-        "/#{@test_index}/tweet/2/_update?version=34&ttl=1d"
+      assert Document.make_path_old(
+               @test_index,
+               "tweet",
+               [version: 34, ttl: "1d"],
+               2,
+               "_update"
+             ) ==
+               "/#{@test_index}/tweet/2/_update?version=34&ttl=1d"
     end
 
     test "makes path from index name, type, and query params" do
       assert Document.make_path_old(@test_index, "tweet", version: 34, ttl: "1d") ==
-        "/#{@test_index}/tweet?version=34&ttl=1d"
+               "/#{@test_index}/tweet?version=34&ttl=1d"
     end
   end
 
@@ -55,6 +60,7 @@ defmodule Elastix.DocumentTest do
       assert response.body["_id"] == "1"
       assert response.body["_index"] == @test_index
       assert response.body["_type"] == "message"
+
       if version >= 6.0 do
         assert response.body["result"] == "created"
       else
@@ -69,7 +75,6 @@ defmodule Elastix.DocumentTest do
       assert response.body["_index"] == @test_index
       assert response.body["result"] == "created"
     end
-
   end
 
   test "index_new should index data without an id", %{version: version} do
@@ -79,6 +84,7 @@ defmodule Elastix.DocumentTest do
     assert response.body["_id"]
     assert response.body["_index"] == @test_index
     assert response.body["_type"] == "message"
+
     if version >= 6.0 do
       assert response.body["result"] == "created"
     else
@@ -94,7 +100,9 @@ defmodule Elastix.DocumentTest do
 
     test "get returns data with 200 after index" do
       Document.index(@test_url, @test_index, "message", 1, @data)
-      {:ok, %{status_code: 200, body: body}} = Document.get(@test_url, @test_index, "message", 1)
+
+      {:ok, %{status_code: 200, body: body}} =
+        Document.get(@test_url, @test_index, "message", 1)
 
       assert body["_source"]["user"] == "örelbörel"
       assert body["_source"]["post_date"] == "2009-11-15T14:12:12"
@@ -119,7 +127,6 @@ defmodule Elastix.DocumentTest do
   end
 
   describe "delete/5 old API" do
-
     test "delete should delete created index" do
       Document.index(@test_url, @test_index, "message", 1, @data)
 
@@ -142,7 +149,9 @@ defmodule Elastix.DocumentTest do
 
       match_all_query = %{"query" => %{"match_all" => %{}}}
 
-      {:ok, response} = Search.search(@test_url, @test_index, ["message"], match_all_query)
+      {:ok, response} =
+        Search.search(@test_url, @test_index, ["message"], match_all_query)
+
       assert response.status_code == 200
       assert response.body["hits"]["total"] == 3
 
@@ -153,14 +162,15 @@ defmodule Elastix.DocumentTest do
 
       assert response.status_code == 200
 
-      {:ok, response} = Search.search(@test_url, @test_index, ["message"], match_all_query)
+      {:ok, response} =
+        Search.search(@test_url, @test_index, ["message"], match_all_query)
+
       assert response.status_code == 200
       assert response.body["hits"]["total"] == 1
     end
   end
 
   describe "delete/5 new API" do
-
     test "deletes created index" do
       Document.index(@test_url, @test_index, @data, %{id: 1})
 
@@ -189,7 +199,9 @@ defmodule Elastix.DocumentTest do
 
       query = %{"query" => %{"match" => %{"user" => "örelbörel"}}}
 
-      {:ok, response} = Document.delete_matching(@test_url, @test_index, query, refresh: true)
+      {:ok, response} =
+        Document.delete_matching(@test_url, @test_index, query, refresh: true)
+
       assert response.status_code == 200
 
       {:ok, response} = Search.search(@test_url, @test_index, [], match_all_query)
@@ -217,7 +229,6 @@ defmodule Elastix.DocumentTest do
   end
 
   describe "mget/5 old API" do
-
     test "can get multiple documents (multi get)" do
       Document.index(@test_url, @test_index, "message", 1, @data)
       Document.index(@test_url, @test_index, "message", 2, @data)
@@ -225,10 +236,7 @@ defmodule Elastix.DocumentTest do
       query = %{
         "docs" => [
           %{"_index" => @test_index, "_type" => "message", "_id" => "1"},
-          %{"_index" => @test_index,
-            "_type" => "message",
-            "_id" => "2"
-          }
+          %{"_index" => @test_index, "_type" => "message", "_id" => "2"}
         ]
       }
 
@@ -325,5 +333,4 @@ defmodule Elastix.DocumentTest do
       assert length(response.body["docs"]) == 2
     end
   end
-
 end

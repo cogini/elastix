@@ -47,12 +47,14 @@ defmodule Elastix.MappingTest do
     assert Mapping.put_path("foo", "biz", %{}, []) == "/foo/_mapping/biz"
     assert Mapping.put_path(["foo"], "biz", %{}, []) == "/foo/_mapping/biz"
     assert Mapping.put_path(["foo", "bar"], "biz", %{}, []) == "/foo,bar/_mapping/biz"
+
     assert Mapping.put_path(["foo", "bar"], "biz", %{}, version: 34, ttl: "1d") ==
-      "/foo,bar/_mapping/biz?version=34&ttl=1d"
+             "/foo,bar/_mapping/biz?version=34&ttl=1d"
 
     assert Mapping.put_path("foo", %{}, [], []) == "/foo/_mapping"
+
     assert Mapping.put_path("foo", %{}, [version: 34, ttl: "1d"], []) ==
-      "/foo/_mapping?version=34&ttl=1d"
+             "/foo/_mapping?version=34&ttl=1d"
   end
 
   test "get_path/3 handles all combinations of params" do
@@ -61,14 +63,18 @@ defmodule Elastix.MappingTest do
     assert Mapping.get_path(["foo"], "biz", []) == "/foo/_mapping/biz"
     assert Mapping.get_path(["foo"], ["biz"], []) == "/foo/_mapping/biz"
     assert Mapping.get_path("foo", ["biz"], []) == "/foo/_mapping/biz"
-    assert Mapping.get_path(["foo", "bar"], ["biz", "baz"], []) == "/foo,bar/_mapping/biz,baz"
+
+    assert Mapping.get_path(["foo", "bar"], ["biz", "baz"], []) ==
+             "/foo,bar/_mapping/biz,baz"
+
     assert Mapping.get_path(["foo", "bar"], ["biz", "baz"], version: 34, ttl: "1d") ==
-      "/foo,bar/_mapping/biz,baz?version=34&ttl=1d"
+             "/foo,bar/_mapping/biz,baz?version=34&ttl=1d"
 
     # New
     assert Mapping.get_path("foo", [], []) == "/foo/_mapping"
+
     assert Mapping.get_path("foo", [version: 34, ttl: "1d"], []) ==
-      "/foo/_mapping?version=34&ttl=1d"
+             "/foo/_mapping?version=34&ttl=1d"
   end
 
   test "make_all_path/2 makes url from types" do
@@ -103,16 +109,17 @@ defmodule Elastix.MappingTest do
         {:ok, response} = Mapping.get(@test_url, @test_index, include_type_name: false)
         assert response.body == %{@test_index => %{"mappings" => %{}}}
         assert response.status_code == 200
+
       version >= {5, 5, 0} ->
         {:ok, response} = Mapping.get(@test_url, @test_index, "message")
         assert response.body["error"]["reason"] == "type[[message]] missing"
         assert response.status_code == 404
+
       true ->
         {:ok, response} = Mapping.get(@test_url, @test_index, "message")
         assert response.body == %{}
         assert response.status_code == 404
     end
-
   end
 
   test "get mapping should return mapping" do

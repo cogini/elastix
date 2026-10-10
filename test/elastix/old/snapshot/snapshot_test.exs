@@ -59,19 +59,19 @@ defmodule Elastix.Old.Snapshot.SnapshotTest do
   describe "constructing paths" do
     test "make_path should make url from repository name, snapshot name, and query params" do
       if @old do
-      assert Snapshot.make_path(
-               @test_repository,
-               "elastix_test_snapshot_1",
-               wait_for_completion: true
-             ) ==
-               "/_snapshot/#{@test_repository}/elastix_test_snapshot_1?wait_for_completion=true"
+        assert Snapshot.make_path(
+                 @test_repository,
+                 "elastix_test_snapshot_1",
+                 wait_for_completion: true
+               ) ==
+                 "/_snapshot/#{@test_repository}/elastix_test_snapshot_1?wait_for_completion=true"
       end
     end
 
     test "make_path should make url from repository name and snapshot name" do
       if @old do
-      assert Snapshot.make_path(@test_repository, "elastix_test_snapshot_1") ==
-               "/_snapshot/#{@test_repository}/elastix_test_snapshot_1"
+        assert Snapshot.make_path(@test_repository, "elastix_test_snapshot_1") ==
+                 "/_snapshot/#{@test_repository}/elastix_test_snapshot_1"
       end
     end
   end

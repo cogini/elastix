@@ -68,14 +68,20 @@ defmodule Elastix.Snapshot.SnapshotTest do
 
   describe "constructing paths" do
     test "make_path/2 makes path from repository name and snapshot name" do
-      assert Snapshot.make_path(@repo, @snapshot_1) == "/_snapshot/#{@repo}/#{@snapshot_1}"
+      assert Snapshot.make_path(@repo, @snapshot_1) ==
+               "/_snapshot/#{@repo}/#{@snapshot_1}"
     end
   end
 
   describe "creating a snapshot" do
     test "a snapshot of multiple indices in the cluster" do
-      {:ok, response} = Snapshot.create(@test_url, @repo, @snapshot_2,
-        %{indices: "#{@index_1},#{@index_2}"}, wait_for_completion: true)
+      {:ok, response} =
+        Snapshot.create(
+          @test_url,
+          @repo,
+          @snapshot_2,
+          %{indices: "#{@index_1},#{@index_2}"}, wait_for_completion: true)
+
       assert response.status_code == 200
 
       wait lin_backoff(500, 1) |> expiry(5_000) do
@@ -97,8 +103,11 @@ defmodule Elastix.Snapshot.SnapshotTest do
     end
 
     test "a snapshot of a single index in the cluster" do
-      {:ok, response} = Snapshot.create(@test_url, @repo, @snapshot_1,
-        %{indices: @index_1}, wait_for_completion: true)
+      {:ok, response} =
+        Snapshot.create(@test_url, @repo, @snapshot_1, %{indices: @index_1},
+          wait_for_completion: true
+        )
+
       assert response.status_code == 200
 
       wait lin_backoff(500, 1) |> expiry(5_000) do
@@ -122,8 +131,13 @@ defmodule Elastix.Snapshot.SnapshotTest do
 
   describe "restoring a snapshot" do
     test "all indices in a snapshot" do
-      {:ok, response} = Snapshot.create(@test_url, @repo, @snapshot_4,
-        %{indices: "#{@index_1},#{@index_2}"}, wait_for_completion: true)
+      {:ok, response} =
+        Snapshot.create(
+          @test_url,
+          @repo,
+          @snapshot_4,
+          %{indices: "#{@index_1},#{@index_2}"}, wait_for_completion: true)
+
       assert response.status_code == 200
 
       wait lin_backoff(500, 1) |> expiry(5_000) do
@@ -161,8 +175,13 @@ defmodule Elastix.Snapshot.SnapshotTest do
     end
 
     test "a specific index in a snapshot" do
-      {:ok, response} = Snapshot.create(@test_url, @repo, @snapshot_3,
-        %{indices: Enum.join([@index_3, @index_4], ",")}, wait_for_completion: true)
+      {:ok, response} =
+        Snapshot.create(
+          @test_url,
+          @repo,
+          @snapshot_3,
+          %{indices: Enum.join([@index_3, @index_4], ",")}, wait_for_completion: true)
+
       assert response.status_code == 200
 
       wait lin_backoff(500, 1) |> expiry(5_000) do
@@ -258,7 +277,9 @@ defmodule Elastix.Snapshot.SnapshotTest do
         then
 
         (
-          assert {:ok, %{status_code: 200}} = Snapshot.delete(@test_url, @repo, @snapshot_5)
+          assert {:ok, %{status_code: 200}} =
+                   Snapshot.delete(@test_url, @repo, @snapshot_5)
+
           assert {:ok, %{status_code: 404}} = Snapshot.get(@test_url, @repo, @snapshot_5)
         )
       end

@@ -60,10 +60,12 @@ defmodule Elastix.Template do
   """
   @spec put(binary, binary, binary | term, Keyword.t) :: HTTP.resp
   def put(elastic_url, template, data, query_params \\ [])
+
   def put(elastic_url, template, data, query_params) when is_binary(data) do
     url = HTTP.make_url(elastic_url, make_path(template), query_params)
     HTTP.put(url, data)
   end
+
   def put(elastic_url, template, data, query_params) do
     put(elastic_url, template, JSON.encode!(data), query_params)
   end
@@ -79,15 +81,18 @@ defmodule Elastix.Template do
       iex> Elastix.Template.exists?("http://localhost:9200", "logstash")
       {:error, %HTTPoison.Error{id: nil, reason: :econnrefused}}
   """
-  @spec exists?(binary, binary, Keyword.t) :: {:ok, boolean} | {:error, HTTPoison.Error.t}
+  @spec exists?(binary, binary, Keyword.t()) ::
+          {:ok, boolean} | {:error, HTTPoison.Error.t()}
   def exists?(elastic_url, template, query_params \\ []) do
     url = HTTP.make_url(elastic_url, make_path(template), query_params)
 
     case HTTP.head(url) do
       {:ok, %{status_code: code}} when code >= 200 and code <= 299 ->
         {:ok, true}
+
       {:ok, _} ->
         {:ok, false}
+
       {:error, reason} ->
         {:error, reason}
     end
@@ -127,5 +132,4 @@ defmodule Elastix.Template do
   # Convert params into path
   @spec make_path(binary) :: binary
   def make_path(template), do: "/_template/#{template}"
-
 end

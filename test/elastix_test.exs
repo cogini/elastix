@@ -6,5 +6,4 @@ defmodule ElastixTest do
     assert Elastix.version_to_tuple("1.1") == {1, 1, 0}
     assert Elastix.version_to_tuple("1.2.3") == {1, 2, 3}
   end
-
 end

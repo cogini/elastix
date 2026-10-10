@@ -199,7 +199,6 @@ defmodule Elastix.Snapshot.Repository do
     HTTP.get(url)
   end
 
-
   @doc """
   Remove reference to location where snapshots are stored.
 
@@ -253,5 +252,4 @@ defmodule Elastix.Snapshot.Repository do
   @spec make_path(binary | nil) :: binary
   def make_path(nil), do: "/_snapshot"
   def make_path(repo), do: "/_snapshot/#{repo}"
-
 end
