@@ -6,7 +6,7 @@ defmodule Elastix.HTTPTest do
 
   alias Elastix.HTTP
 
-  @test_url Application.get_env(@app, :test_url)
+  @test_url Application.compile_env(@app, :test_url)
 
   setup_all do
     # Query the Elasticsearch instance to determine what version it is running
