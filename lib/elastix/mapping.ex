@@ -96,7 +96,7 @@ defmodule Elastix.Mapping do
       {:ok, %HTTPoison.Response{...}}
 
   """
-  @spec get(binary, binary | [binary], binary | [binary] | Keyword.t, Keyword.t) :: HTTP.resp
+  @spec get(binary(), binary() | [binary()], binary() | [binary()] | keyword(), keyword()) :: HTTP.resp()
   # New: @spec get(binary, binary, Keyword.t, Keyword.t) :: HTTP.resp
   # Old: @spec get(binary, binary | [binary], binary | [binary], Keyword.t) :: HTTP.resp
   def get(elastic_url, indexes, types_or_query_params \\ [], query_params \\ []) do
@@ -104,7 +104,7 @@ defmodule Elastix.Mapping do
     HTTP.get(url)
   end
 
-  @spec get_path(binary | [binary], binary | [binary] | Keyword.t, Keyword.t) :: binary
+  @spec get_path(binary() | [binary()], binary() | [binary()] | keyword(), keyword()) :: binary()
   # New: @spec get(binary, Keyword.t, Keyword.t) :: binary
   def get_path(index, [], []) when is_binary(index) do
     "/#{index}/_mapping"
