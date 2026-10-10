@@ -108,7 +108,7 @@ defmodule Elastix.Index do
       {:ok, %HTTPoison.Response{...}}
 
   """
-  @spec open(binary, binary) :: HTTP.resp
+  @spec open(binary(), binary()) :: HTTP.resp()
   def open(elastic_url, index) do
     url = HTTP.make_url(elastic_url, [index, "_open"])
     HTTP.post(url, "")
@@ -125,7 +125,7 @@ defmodule Elastix.Index do
       {:ok, %HTTPoison.Response{...}}
 
   """
-  @spec close(binary, binary) :: HTTP.resp
+  @spec close(binary(), binary()) :: HTTP.resp()
   def close(elastic_url, index) do
     url = HTTP.make_url(elastic_url, [index, "_close"])
     HTTP.post(url, "")

@@ -200,7 +200,7 @@ defmodule Elastix.Document do
       {:ok, %HTTPoison.Response{...}}
 
   """
-  @spec update(binary, binary, binary, binary, map, Keyword.t) :: HTTP.resp
+  @spec update(binary(), binary(), binary(), binary(), map(), keyword()) :: HTTP.resp()
   def update(elastic_url, index, type, id, data, query_params \\ []) do
     url = HTTP.make_url(elastic_url, make_path_old(index, type, query_params, id, "_update"))
     HTTP.post(url, JSON.encode!(data))
@@ -215,7 +215,7 @@ defmodule Elastix.Document do
       iex> Elastix.Document.update_by_query("http://localhost:9200", "twitter", %{"term" => %{"user" => "kimchy"}}, %{inline: "ctx._source.user = 'kimchy updated'", lang: "painless"})
       {:ok, %HTTPoison.Response{...}}
   """
-  @spec update_by_query(
+  @spec update_by_query(binary(), binary(), map(), map(), keyword()) :: HTTP.resp()
           elastic_url :: String.t(),
           index :: String.t(),
           query :: map,

@@ -42,7 +42,7 @@ defmodule Elastix.Bulk do
   * httpoison_options: options for HTTP call, e.g. setting timeout
 
   """
-  @spec post_raw(binary, iodata, Keyword.t, Keyword.t) :: HTTP.resp
+  @spec post_raw(binary(), iodata(), Keyword.t(), Keyword.t()) :: HTTP.resp()
   def post_raw(elastic_url, raw_data, options \\ [], query_params \\ []) do
     url = HTTP.make_url(elastic_url, make_path(options[:index], options[:type]), query_params)
     headers = [{"Content-Type", "application/x-ndjson"}]
@@ -51,7 +51,7 @@ defmodule Elastix.Bulk do
   end
 
   @doc deprecated: "Use post/4 instead"
-  @spec post_to_iolist(binary, list, Keyword.t, Keyword.t) :: HTTP.resp
+  @spec post_to_iolist(binary(), list(), Keyword.t(), Keyword.t()) :: HTTP.resp()
   def post_to_iolist(elastic_url, lines, options \\ [], query_params \\ []) do
     Logger.warning(
       "This function is deprecated and will be removed in future releases; use Elastix.Bulk.post/4 instead."

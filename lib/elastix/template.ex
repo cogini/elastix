@@ -106,7 +106,7 @@ defmodule Elastix.Template do
       iex> Elastix.Template.get("http://localhost:9200", "logstash")
       {:ok, %HTTPoison.Response{...}}
   """
-  @spec get(binary, binary, Keyword.t) :: HTTP.resp
+  @spec get(binary(), binary(), keyword()) :: HTTP.resp()
   def get(elastic_url, template, query_params \\ []) do
     url = HTTP.make_url(elastic_url, make_path(template), query_params)
     HTTP.get(url)
@@ -122,7 +122,7 @@ defmodule Elastix.Template do
       iex> Elastix.Template.get("http://localhost:9200", "logstash")
       {:ok, %HTTPoison.Response{...}}
   """
-  @spec delete(binary, binary, Keyword.t) :: HTTP.resp
+  @spec delete(binary(), binary(), keyword()) :: HTTP.resp()
   def delete(elastic_url, template, query_params \\ []) do
     url = HTTP.make_url(elastic_url, make_path(template), query_params)
     HTTP.delete(url)

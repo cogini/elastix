@@ -82,7 +82,7 @@ defmodule Elastix.HTTP do
       "/path?a=1&b=2"
 
   """
-  @spec add_query_params(binary, Enum.t | nil) :: binary
+  @spec add_query_params(binary(), Enum.t() | nil) :: binary()
   def add_query_params(url, params)
   def add_query_params(url, nil), do: url
   def add_query_params(url, []), do: url

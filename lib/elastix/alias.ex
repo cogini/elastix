@@ -19,7 +19,7 @@ defmodule Elastix.Alias do
       {:ok, %HTTPoison.Response{...}}
 
   """
-  @spec post(binary, [map]) :: HTTP.resp
+  @spec post(binary(), [map()]) :: HTTP.resp()
   def post(elastic_url, actions) do
     url = HTTP.make_url(elastic_url, "_aliases")
     HTTP.post(url, JSON.encode!(%{actions: actions}))
@@ -32,7 +32,7 @@ defmodule Elastix.Alias do
       iex> Elastix.Alias.get("http://localhost:9200", "alias1")
       {:ok, %HTTPoison.Response{...}}
   """
-  @spec get(elastic_url :: String.t(), name :: String.t()) :: HTTP.resp()
+  @spec get(binary(), binary()) :: HTTP.resp()
   def get(elastic_url, name \\ "") do
     prepare_url(elastic_url, ["_alias", name])
     |> HTTP.get()

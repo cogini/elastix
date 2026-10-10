@@ -99,7 +99,7 @@ defmodule Elastix.Search do
       {:ok, %HTTPoison.Response{...}}
 
   """
-  @spec count(binary, binary, list, map) :: HTTP.resp
+  @spec count(binary(), binary(), list(), map()) :: HTTP.resp()
   def count(elastic_url, index, types, data) do
     count(elastic_url, index, types, data, [])
   end
@@ -109,7 +109,7 @@ defmodule Elastix.Search do
 
   See [`HTTPoison.request/5`](https://hexdocs.pm/httpoison/HTTPoison.html#request/5).
   """
-  @spec count(binary, binary, list, map, Keyword.t, Keyword.t) :: HTTP.resp
+  @spec count(binary(), binary(), list(), map(), keyword(), keyword()) :: HTTP.resp()
   def count(elastic_url, index, types, data, query_params, options \\ []) do
     url = HTTP.make_url(elastic_url, make_path(index, types, "_count"), query_params)
     HTTP.post(url, JSON.encode!(data), [], options)

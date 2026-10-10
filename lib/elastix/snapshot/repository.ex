@@ -225,7 +225,7 @@ defmodule Elastix.Snapshot.Repository do
       }
 
   """
-  @spec delete(binary, binary) :: HTTP.resp
+  @spec delete(binary(), binary()) :: HTTP.resp()
   def delete(elastic_url, repo) do
     url = HTTP.make_url(elastic_url, make_path(repo))
     HTTP.delete(url)
@@ -241,7 +241,7 @@ defmodule Elastix.Snapshot.Repository do
 
   Available in Elasticsearch 7.x and later.
   """
-  @spec cleanup(binary, binary) :: HTTP.resp
+  @spec cleanup(binary(), binary()) :: HTTP.resp()
   def cleanup(elastic_url, repo) do
     url = HTTP.make_url(elastic_url, [make_path(repo), "_cleanup"])
     HTTP.post(url, "")

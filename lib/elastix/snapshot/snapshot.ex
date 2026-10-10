@@ -178,7 +178,7 @@ defmodule Elastix.Snapshot.Snapshot do
       {:ok, %HTTPoison.Response{...}}
 
   """
-  @spec delete(String.t(), String.t(), String.t(), Keyword.t()) :: {:ok, %HTTPoison.Response{}}
+  @spec delete(binary(), binary(), binary(), keyword()) :: {:ok, %HTTPoison.Response{}}
   def delete(elastic_url, repo_name, snapshot_name, options \\ []) do
     elastic_url
     |> prepare_url(make_path(repo_name, snapshot_name))
@@ -194,7 +194,7 @@ defmodule Elastix.Snapshot.Snapshot do
   end
 
   @doc false
-  @spec make_path(binary | nil, binary | nil) :: binary
+  @spec make_path(binary() | nil, binary() | nil) :: binary()
   def make_path(repo, snapshot)
   def make_path(nil, nil), do: "/_snapshot"
   def make_path(repo, nil), do: "/_snapshot/#{repo}"

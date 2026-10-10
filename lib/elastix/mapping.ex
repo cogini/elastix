@@ -56,10 +56,12 @@ defmodule Elastix.Mapping do
     indexes = Enum.join(indexes, ",")
     put_path(indexes, type, mappings, query_params)
   end
+
   def put_path(indexes, type, _mappings, query_params) when is_binary(type) do
     path = "/#{indexes}/_mapping/#{type}"
     HTTP.add_query_params(path, query_params)
   end
+
   # New
   def put_path(index, mappings, query_params, _unused) when is_map(mappings) do
     path = "/#{index}/_mapping"
@@ -110,6 +112,7 @@ defmodule Elastix.Mapping do
     types = Enum.join(types, ",")
     HTTP.add_query_params("/#{indexes}/_mapping/#{types}", query_params)
   end
+
   def get_path(indexes, type, query_params) when is_list(indexes) and is_binary(type) do
     indexes = Enum.join(indexes, ",")
     HTTP.add_query_params("/#{indexes}/_mapping/#{type}", query_params)
@@ -118,6 +121,7 @@ defmodule Elastix.Mapping do
     types = Enum.join(types, ",")
     HTTP.add_query_params("/#{index}/_mapping/#{types}", query_params)
   end
+
   def get_path(index, type, query_params) when is_binary(index) and is_binary(type) do
     HTTP.add_query_params("/#{index}/_mapping/#{type}", query_params)
   end
@@ -131,7 +135,7 @@ defmodule Elastix.Mapping do
       {:ok, %HTTPoison.Response{...}}
 
   """
-  @spec get_all(binary, Keyword.t) :: HTTP.resp
+  @spec get_all(binary(), keyword()) :: HTTP.resp()
   def get_all(elastic_url, query_params \\ []) do
     url = HTTP.make_url(elastic_url, "_mapping", query_params)
     HTTP.get(url)
@@ -146,7 +150,7 @@ defmodule Elastix.Mapping do
       {:ok, %HTTPoison.Response{...}}
 
   """
-  @spec get_all_with_type(binary, [binary], Keyword.t) :: HTTP.resp
+  @spec get_all_with_type(binary(), [binary()], keyword()) :: HTTP.resp()
   def get_all_with_type(elastic_url, types, query_params \\ []) do
     url = HTTP.make_url(elastic_url, make_all_path(types), query_params)
     HTTP.get(url)
@@ -158,5 +162,4 @@ defmodule Elastix.Mapping do
     types = Enum.join(types, ",")
     "/_mapping/#{types}"
   end
-
 end
