@@ -50,7 +50,13 @@ defmodule Elastix.Mapping do
 
   @doc false
   @spec put_path(binary() | [binary()], binary() | map(), map() | keyword(), keyword()) :: binary()
-  def put_path(indexes, type_or_mappings, mappings_or_query_params \\ [], query_params \\ [])
+  def put_path(
+        indexes,
+        type_or_mappings,
+        mappings_or_query_params \\ [],
+        query_params \\ []
+      )
+
   # Old
   def put_path(indexes, type, mappings, query_params)
       when is_list(indexes) and is_binary(type) do
