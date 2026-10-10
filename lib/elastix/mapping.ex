@@ -31,7 +31,7 @@ defmodule Elastix.Mapping do
   """
   # Support the old Elasticsearch API with mapping types and the new API
   # without mapping types using the same natural function name.
-  @spec put(binary, binary | [binary], binary | map, map | Keyword.t, Keyword.t) :: HTTP.resp
+  @spec put(binary(), binary() | [binary()], binary() | map(), map() | keyword(), keyword()) :: HTTP.resp()
 
   def put(elastic_url, index, type_or_mappings, mappings_or_query_params \\ [], query_params \\ [])
 
@@ -49,7 +49,7 @@ defmodule Elastix.Mapping do
   end
 
   @doc false
-  @spec put_path(binary | [binary], binary | map, map | Keyword.t, Keyword.t) :: binary
+  @spec put_path(binary() | [binary()], binary() | map(), map() | keyword(), keyword()) :: binary()
   def put_path(indexes, type_or_mappings, mappings_or_query_params \\ [], query_params \\ [])
   # Old
   def put_path(indexes, type, mappings, query_params)
