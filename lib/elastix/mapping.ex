@@ -31,7 +31,13 @@ defmodule Elastix.Mapping do
   """
   # Support the old Elasticsearch API with mapping types and the new API
   # without mapping types using the same natural function name.
-  @spec put(binary(), binary() | [binary()], binary() | map(), map() | keyword(), keyword()) :: HTTP.resp()
+  @spec put(
+          binary(),
+          binary() | [binary()],
+          binary() | map(),
+          map() | keyword(),
+          keyword()
+        ) :: HTTP.resp()
 
   def put(
         elastic_url,
@@ -55,7 +61,8 @@ defmodule Elastix.Mapping do
   end
 
   @doc false
-  @spec put_path(binary() | [binary()], binary() | map(), map() | keyword(), keyword()) :: binary()
+  @spec put_path(binary() | [binary()], binary() | map(), map() | keyword(), keyword()) ::
+          binary()
   def put_path(
         indexes,
         type_or_mappings,
@@ -102,7 +109,8 @@ defmodule Elastix.Mapping do
       {:ok, %HTTPoison.Response{...}}
 
   """
-  @spec get(binary(), binary() | [binary()], binary() | [binary()] | keyword(), keyword()) :: HTTP.resp()
+  @spec get(binary(), binary() | [binary()], binary() | [binary()] | keyword(), keyword()) ::
+          HTTP.resp()
   # New: @spec get(binary, binary, Keyword.t, Keyword.t) :: HTTP.resp
   # Old: @spec get(binary, binary | [binary], binary | [binary], Keyword.t) :: HTTP.resp
   def get(elastic_url, indexes, types_or_query_params \\ [], query_params \\ []) do
@@ -111,7 +119,8 @@ defmodule Elastix.Mapping do
     |> HTTP.get()
   end
 
-  @spec get_path(binary() | [binary()], binary() | [binary()] | keyword(), keyword()) :: binary()
+  @spec get_path(binary() | [binary()], binary() | [binary()] | keyword(), keyword()) ::
+          binary()
   # New: @spec get(binary, Keyword.t, Keyword.t) :: binary
   def get_path(index, [], []) when is_binary(index) do
     "/#{index}/_mapping"

@@ -46,6 +46,7 @@ defmodule Elastix.Bulk do
   def post_raw(elastic_url, raw_data, options \\ [], query_params \\ []) do
     headers = [{"Content-Type", "application/x-ndjson"}]
     httpoison_options = options[:httpoison_options] || []
+
     elastic_url
     |> HTTP.make_url(make_path(options[:index], options[:type]), query_params)
     |> HTTP.post(raw_data, headers, httpoison_options)
@@ -62,7 +63,11 @@ defmodule Elastix.Bulk do
 
     elastic_url
     |> HTTP.make_url(make_path(options[:index], options[:type]), query_params)
-    |> HTTP.post(Enum.map(lines, fn line -> JSON.encode!(line) <> "\n" end), [], httpoison_options)
+    |> HTTP.post(
+      Enum.map(lines, fn line -> JSON.encode!(line) <> "\n" end),
+      [],
+      httpoison_options
+    )
   end
 
   @doc false

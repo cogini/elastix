@@ -124,7 +124,8 @@ defmodule Elastix.Document do
   [Multi Get API](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-multi-get.html).
   """
 
-  @spec mget(binary(), map(), binary() | nil, binary() | keyword(), keyword()) :: HTTP.resp()
+  @spec mget(binary(), map(), binary() | nil, binary() | keyword(), keyword()) ::
+          HTTP.resp()
   # Old: @spec mget(binary, map, binary | nil, binary | nil, Keyword.t) :: HTTP.resp
 
   def mget(
@@ -164,7 +165,8 @@ defmodule Elastix.Document do
       {:ok, %HTTPoison.Response{...}}
 
   """
-  @spec delete(binary(), binary(), binary(), keyword() | binary(), keyword()) :: HTTP.resp()
+  @spec delete(binary(), binary(), binary(), keyword() | binary(), keyword()) ::
+          HTTP.resp()
 
   def delete(elastic_url, index, type_or_id, id_or_query_params \\ [], query_params \\ [])
 

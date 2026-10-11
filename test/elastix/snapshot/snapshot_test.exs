@@ -80,7 +80,9 @@ defmodule Elastix.Snapshot.SnapshotTest do
           @test_url,
           @repo,
           @snapshot_2,
-          %{indices: "#{@index_1},#{@index_2}"}, wait_for_completion: true)
+          %{indices: "#{@index_1},#{@index_2}"},
+          wait_for_completion: true
+        )
 
       assert response.status_code == 200
 
@@ -136,7 +138,9 @@ defmodule Elastix.Snapshot.SnapshotTest do
           @test_url,
           @repo,
           @snapshot_4,
-          %{indices: "#{@index_1},#{@index_2}"}, wait_for_completion: true)
+          %{indices: "#{@index_1},#{@index_2}"},
+          wait_for_completion: true
+        )
 
       assert response.status_code == 200
 
@@ -180,7 +184,9 @@ defmodule Elastix.Snapshot.SnapshotTest do
           @test_url,
           @repo,
           @snapshot_3,
-          %{indices: Enum.join([@index_3, @index_4], ",")}, wait_for_completion: true)
+          %{indices: Enum.join([@index_3, @index_4], ",")},
+          wait_for_completion: true
+        )
 
       assert response.status_code == 200
 
