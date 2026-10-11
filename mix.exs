@@ -1,7 +1,7 @@
 defmodule Elastix.Mixfile do
   use Mix.Project
 
-  @source_url "https://github.com/werbitzky/elastix"
+  @github "https://github.com/werbitzky/elastix"
   @version "0.10.0"
 
   def project do
@@ -13,7 +13,13 @@ defmodule Elastix.Mixfile do
       build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
+      dialyzer: [
+        plt_add_apps: [:mix, :ex_unit]
+      ],
+      test_coverage: [tool: ExCoveralls],
       package: package(),
+      source_url: @github,
+      homepage_url: @github,
       docs: docs(),
       deps: deps()
     ]
@@ -44,23 +50,31 @@ defmodule Elastix.Mixfile do
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
       {:ex_doc, "~> 0.40.0", only: :dev, runtime: false},
+      {:excoveralls, "~> 0.18.0", only: [:dev, :test], runtime: false},
+      {:junit_formatter, "~> 3.3", only: [:dev, :test], runtime: false},
+      {:mix_audit, "~> 2.0", only: [:dev, :test], runtime: false},
       {:mix_test_watch, "~> 1.4", only: [:test, :dev]},
       {:poison, "~> 6.0", optional: true},
       {:httpoison, "~> 3.0"},
       {:retry, "~> 0.8"},
-      {:ssl_verify_fun, "~> 1.1"}
+      {:ssl_verify_fun, "~> 1.1"},
+      {:styler, "~> 1.11.0", only: [:dev, :test], runtime: false}
     ]
+  end
+
+  defp description do
+    "A DSL-free Elastic / Elasticsearch client for Elixir."
   end
 
   defp package do
     [
-      description: "A DSL-free Elastic / Elasticsearch client for Elixir.",
+      description: description(),
       files: ["lib", "mix.exs", "README.md", "CHANGELOG.md", "LICENSE"],
       maintainers: ["El Werbitzky", "evuez <helloevuez@gmail.com>"],
       licenses: ["WTFPL-2"],
       links: %{
         "Changelog" => "https://hexdocs.pm/elastix/changelog.html",
-        "GitHub" => @source_url
+        "GitHub" => @github
       }
     ]
   end
@@ -77,7 +91,7 @@ defmodule Elastix.Mixfile do
         # Run `mix deps.clean --unlock --unused` to clean things identified below
         "deps.unlock --check-unused",
         # "hex.outdated",
-        "hex.audit",
+        # "hex.audit",
         # Waiting on fix for cowlib
         "deps.audit --ignore-package-names cowlib,mint,hackney",
         # "sobelow --exit --quiet --skip -i DOS.StringToAtom,Config.HTTPS,Config.HSTS",
@@ -91,24 +105,24 @@ defmodule Elastix.Mixfile do
         # "hex.audit",
         # Waiting on fix for cowlib
         "deps.audit --ignore-package-names cowlib,mint,hackney",
-        "credo --mute-exit-status --all"
+        "credo --mute-exit-status --all",
         # "sobelow --exit --quiet --skip -i DOS.StringToAtom,Config.HTTPS,Config.HSTS",
-        # "dialyzer --quiet-with-result"
+        "dialyzer --quiet-with-result"
       ]
     ]
   end
 
   defp docs do
     [
+      main: "readme",
+      source_url: @github,
+      source_ref: "v#{@version}",
       extras: [
         "CHANGELOG.md",
         {:LICENSE, [title: "License"]},
         "README.md",
         "pages/custom-json-codec.md"
       ],
-      main: "readme",
-      source_url: @source_url,
-      source_ref: "v#{@version}",
       formatters: ["html"]
     ]
   end
