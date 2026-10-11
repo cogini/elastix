@@ -45,9 +45,10 @@ defmodule Elastix.Mixfile do
       {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
       {:ex_doc, "~> 0.40.0", only: :dev, runtime: false},
       {:mix_test_watch, "~> 1.4", only: [:test, :dev]},
-      {:poison, "~> 3.0 or ~> 4.0", optional: true},
-      {:httpoison, "~> 1.4"},
-      {:retry, "~> 0.8"}
+      {:poison, "~> 6.0", optional: true},
+      {:httpoison, "~> 3.0"},
+      {:retry, "~> 0.8"},
+      {:ssl_verify_fun, "~> 1.1"}
     ]
   end
 
@@ -93,7 +94,7 @@ defmodule Elastix.Mixfile do
         "credo --mute-exit-status --all"
         # "sobelow --exit --quiet --skip -i DOS.StringToAtom,Config.HTTPS,Config.HSTS",
         # "dialyzer --quiet-with-result"
-      ],
+      ]
     ]
   end
 
