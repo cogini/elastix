@@ -58,7 +58,7 @@ defmodule Elastix.Mixfile do
       {:httpoison, "~> 3.0"},
       {:retry, "~> 0.8"},
       {:ssl_verify_fun, "~> 1.1"},
-      {:styler, "~> 1.11.0", only: [:dev, :test], runtime: false}
+      {:styler, "~> 1.12.0", only: [:dev, :test], runtime: false}
     ]
   end
 
