@@ -64,8 +64,9 @@ defmodule Elastix.Snapshot.Snapshot do
         query_params \\ [],
         options \\ []
       ) do
-    url = HTTP.make_url(elastic_url, make_path(repo, snapshot), query_params)
-    HTTP.put(url, JSON.encode!(config), Keyword.get(options, :httpoison_options, []))
+    elastic_url
+    |> HTTP.make_url(make_path(repo, snapshot), query_params)
+    |> HTTP.put(JSON.encode!(config), options[:httpoison_options] || [])
   end
 
   @doc """
@@ -73,8 +74,9 @@ defmodule Elastix.Snapshot.Snapshot do
   """
   @spec restore(binary(), binary(), binary(), map(), Keyword.t()) :: HTTP.resp()
   def restore(elastic_url, repo, snapshot, data \\ %{}, options \\ []) do
-    url = HTTP.make_url(elastic_url, [make_path(repo, snapshot), "_restore"])
-    HTTP.post(url, JSON.encode!(data), Keyword.get(options, :httpoison_options, []))
+    elastic_url
+    |> HTTP.make_url([make_path(repo, snapshot), "_restore"])
+    |> HTTP.post(JSON.encode!(data), options[:httpoison_options] || [])
   end
 
   @doc """
@@ -94,8 +96,9 @@ defmodule Elastix.Snapshot.Snapshot do
   """
   @spec status(binary(), binary(), binary(), keyword()) :: HTTP.resp()
   def status(elastic_url, repo \\ "", snapshot \\ "", options \\ []) do
-    url = HTTP.make_url(elastic_url, [make_path(repo, snapshot), "_status"])
-    HTTP.get(url, [], Keyword.get(options, :httpoison_options, []))
+    elastic_url
+    |> HTTP.make_url([make_path(repo, snapshot), "_status"])
+    |> HTTP.get([], options[:httpoison_options] || [])
   end
 
   @doc """
