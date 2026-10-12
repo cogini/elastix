@@ -17,6 +17,7 @@ defmodule Elastix.Mixfile do
         plt_add_apps: [:mix, :ex_unit]
       ],
       test_coverage: [tool: ExCoveralls],
+      description: description(),
       package: package(),
       source_url: @github,
       homepage_url: @github,
