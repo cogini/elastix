@@ -49,17 +49,21 @@ defmodule Elastix.JSON do
 
   @doc false
   defp json_options do
-    # Support :poison_options config for backward-compatibility
-    case Elastix.config(:poison_options) do
-      nil ->
-        Elastix.config(:json_options, [])
+    config = Elastix.config()
 
-      opts ->
+    cond do 
+      Keyword.has_key?(config, :json_options) ->
+        Keyword.fetch!(config, :json_options)
+
+      Keyword.has_key?(config, :poison_options) ->
         Logger.warning(
           "Using :poison_options is deprecated and might not work in future releases; use :json_options instead."
         )
 
-        opts
+        Keyword.fetch!(config, :poison_options)
+
+      true ->
+        []
     end
   end
 
