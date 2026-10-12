@@ -28,7 +28,7 @@ defmodule Elastix.Mixfile do
 
   def application do
     [
-      applications: [:logger, :httpoison, :retry]
+      extra_applications: [:logger]
     ]
   end
 
