@@ -5,7 +5,7 @@ defmodule Elastix.Old.BulkTest do
   alias Elastix.Bulk
   alias Elastix.Document
 
-  @old false
+  # @old false
 
   @test_url Elastix.config(:test_url)
   @test_index Elastix.config(:test_index)
@@ -16,26 +16,26 @@ defmodule Elastix.Old.BulkTest do
     :ok
   end
 
-  test "make_path should make url from index name, type, and query params" do
-    if @old do
-      assert Bulk.make_path(@test_index, "tweet", version: 34, ttl: "1d") ==
-               "/#{@test_index}/tweet/_bulk?version=34&ttl=1d"
-    end
-  end
+  # test "make_path should make url from index name, type, and query params" do
+  #   if @old do
+  #     assert Bulk.make_path(@test_index, "tweet", version: 34, ttl: "1d") ==
+  #              "/#{@test_index}/tweet/_bulk?version=34&ttl=1d"
+  #   end
+  # end
 
-  test "make_path should make url from index name and query params" do
-    if @old do
-      assert Bulk.make_path(@test_index, nil, version: 34, ttl: "1d") ==
-               "/#{@test_index}/_bulk?version=34&ttl=1d"
-    end
-  end
+  # test "make_path should make url from index name and query params" do
+  #   if @old do
+  #     assert Bulk.make_path(@test_index, nil, version: 34, ttl: "1d") ==
+  #              "/#{@test_index}/_bulk?version=34&ttl=1d"
+  #   end
+  # end
 
-  test "make_path should make url from query params" do
-    if @old do
-      assert Bulk.make_path(nil, nil, version: 34, ttl: "1d") ==
-               "/_bulk?version=34&ttl=1d"
-    end
-  end
+  # test "make_path should make url from query params" do
+  #   if @old do
+  #     assert Bulk.make_path(nil, nil, version: 34, ttl: "1d") ==
+  #              "/_bulk?version=34&ttl=1d"
+  #   end
+  # end
 
   test "bulk accepts httpoison options" do
     lines = [
