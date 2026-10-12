@@ -57,7 +57,7 @@ defmodule Elastix.Mixfile do
       {:mix_test_watch, "~> 1.4", only: [:test, :dev]},
       {:poison, "~> 6.0", optional: true},
       {:httpoison, "~> 3.0"},
-      {:retry, "~> 0.8"},
+      {:retry, "~> 0.19.0"},
       {:ssl_verify_fun, "~> 1.1"},
       {:styler, "~> 1.12.0", only: [:dev, :test], runtime: false}
     ]
