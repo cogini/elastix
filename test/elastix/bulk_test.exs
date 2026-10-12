@@ -199,6 +199,6 @@ defmodule Elastix.BulkTest do
   end
 
   defp encode_line(line) do
-    Jason.encode!(line) <> "\n"
+    Poison.encode!(line) <> "\n"
   end
 end
