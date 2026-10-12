@@ -86,21 +86,16 @@ defmodule Elastix.Snapshot.SnapshotTest do
 
       assert response.status_code == 200
 
-      wait lin_backoff(500, 1) |> expiry(5_000) do
-        (
-          {:ok, response} = Snapshot.status(@test_url, @repo, @snapshot_2)
-          snapshot = List.first(response.body["snapshots"])
-          snapshot["state"] == "SUCCESS"
-        )
-
-        then
-
-        (
+      wait linear_backoff(500, 1) |> expiry(5_000) do
+        {:ok, response} = Snapshot.status(@test_url, @repo, @snapshot_2)
+        snapshot = List.first(response.body["snapshots"])
+        snapshot["state"] == "SUCCESS"
+      after
+        _ ->
           {:ok, response} = Snapshot.get(@test_url, @repo, @snapshot_2)
           snapshot = List.first(response.body["snapshots"])
           assert Enum.member?(snapshot["indices"], @index_1)
           assert Enum.member?(snapshot["indices"], @index_2)
-        )
       end
     end
 
@@ -112,21 +107,16 @@ defmodule Elastix.Snapshot.SnapshotTest do
 
       assert response.status_code == 200
 
-      wait lin_backoff(500, 1) |> expiry(5_000) do
-        (
-          {:ok, response} = Snapshot.status(@test_url, @repo, @snapshot_1)
-          snapshot = List.first(response.body["snapshots"])
-          snapshot["state"] == "SUCCESS"
-        )
-
-        then
-
-        (
+      wait linear_backoff(500, 1) |> expiry(5_000) do
+        {:ok, response} = Snapshot.status(@test_url, @repo, @snapshot_1)
+        snapshot = List.first(response.body["snapshots"])
+        snapshot["state"] == "SUCCESS"
+      after
+        _ ->
           {:ok, response} = Snapshot.get(@test_url, @repo, @snapshot_1)
           snapshot = List.first(response.body["snapshots"])
           assert Enum.member?(snapshot["indices"], @index_1)
           refute Enum.member?(snapshot["indices"], @index_2)
-        )
       end
     end
   end
@@ -144,35 +134,27 @@ defmodule Elastix.Snapshot.SnapshotTest do
 
       assert response.status_code == 200
 
-      wait lin_backoff(500, 1) |> expiry(5_000) do
-        (
-          {:ok, response} = Snapshot.status(@test_url, @repo, @snapshot_4)
-          snapshot = List.first(response.body["snapshots"])
-          snapshot["state"] == "SUCCESS"
-        )
-
-        then
-
-        (
+      wait linear_backoff(500, 1) |> expiry(5_000) do
+        {:ok, response} = Snapshot.status(@test_url, @repo, @snapshot_4)
+        snapshot = List.first(response.body["snapshots"])
+        snapshot["state"] == "SUCCESS"
+      after
+        _ ->
           Index.close(@test_url, @index_1)
           Index.close(@test_url, @index_2)
           Index.delete(@test_url, @index_1)
           Index.delete(@test_url, @index_2)
-        )
       end
 
-      wait lin_backoff(500, 1) |> expiry(5_000) do
-        (
-          {:ok, %{status_code: 404}} = Index.get(@test_url, @index_1)
-          {:ok, %{status_code: 404}} = Index.get(@test_url, @index_2)
-        )
-
-        then
-
-        Snapshot.restore(@test_url, @repo, @snapshot_4, %{partial: true})
+      wait linear_backoff(500, 1) |> expiry(5_000) do
+        {:ok, %{status_code: 404}} = Index.get(@test_url, @index_1)
+        {:ok, %{status_code: 404}} = Index.get(@test_url, @index_2)
+      after
+        _ ->
+          Snapshot.restore(@test_url, @repo, @snapshot_4, %{partial: true})
       end
 
-      wait lin_backoff(500, 1) |> expiry(5_000) do
+      wait linear_backoff(500, 1) |> expiry(5_000) do
         {:ok, %{status_code: 200}} = Index.get(@test_url, @index_1)
         {:ok, %{status_code: 200}} = Index.get(@test_url, @index_2)
       end
@@ -190,38 +172,30 @@ defmodule Elastix.Snapshot.SnapshotTest do
 
       assert response.status_code == 200
 
-      wait lin_backoff(500, 1) |> expiry(5_000) do
-        (
-          {:ok, response} = Snapshot.status(@test_url, @repo, @snapshot_3)
-          assert response.status_code == 200
-          snapshots = response.body["snapshots"]
+      wait linear_backoff(500, 1) |> expiry(5_000) do
+        {:ok, response} = Snapshot.status(@test_url, @repo, @snapshot_3)
+        assert response.status_code == 200
+        snapshots = response.body["snapshots"]
 
-          snapshot = List.first(snapshots)
-          snapshot["state"] == "SUCCESS"
-        )
-
-        then
-
-        (
+        snapshot = List.first(snapshots)
+        snapshot["state"] == "SUCCESS"
+      after
+        _ ->
           Index.close(@test_url, @index_3)
           Index.close(@test_url, @index_4)
           Index.delete(@test_url, @index_3)
           Index.delete(@test_url, @index_4)
-        )
       end
 
-      wait lin_backoff(500, 1) |> expiry(5_000) do
-        (
-          {:ok, %{status_code: 404}} = Index.get(@test_url, @index_3)
-          {:ok, %{status_code: 404}} = Index.get(@test_url, @index_4)
-        )
-
-        then
-
-        Snapshot.restore(@test_url, @repo, @snapshot_3, %{indices: @index_3})
+      wait linear_backoff(500, 1) |> expiry(5_000) do
+        {:ok, %{status_code: 404}} = Index.get(@test_url, @index_3)
+        {:ok, %{status_code: 404}} = Index.get(@test_url, @index_4)
+      after
+        _ ->
+          Snapshot.restore(@test_url, @repo, @snapshot_3, %{indices: @index_3})
       end
 
-      wait lin_backoff(500, 1) |> expiry(5_000) do
+      wait linear_backoff(500, 1) |> expiry(5_000) do
         {:ok, %{status_code: 200}} = Index.get(@test_url, @index_3)
         {:ok, %{status_code: 404}} = Index.get(@test_url, @index_4)
       end
@@ -244,7 +218,7 @@ defmodule Elastix.Snapshot.SnapshotTest do
     test "information about a specific snapshot" do
       Snapshot.create(@test_url, @repo, @snapshot_5, %{indices: @index_5})
 
-      wait lin_backoff(500, 1) |> expiry(5_000) do
+      wait linear_backoff(500, 1) |> expiry(5_000) do
         {:ok, %{status_code: 200}} = Snapshot.status(@test_url, @repo, @snapshot_5)
       end
     end
@@ -273,21 +247,16 @@ defmodule Elastix.Snapshot.SnapshotTest do
     test "snapshot is deleted" do
       Snapshot.create(@test_url, @repo, @snapshot_5, %{indices: @index_5})
 
-      wait lin_backoff(500, 1) |> expiry(5_000) do
-        (
-          {:ok, response} = Snapshot.status(@test_url, @repo, @snapshot_5)
-          snapshot = List.first(response.body["snapshots"])
-          snapshot["state"] == "SUCCESS"
-        )
-
-        then
-
-        (
+      wait linear_backoff(500, 1) |> expiry(5_000) do
+        {:ok, response} = Snapshot.status(@test_url, @repo, @snapshot_5)
+        snapshot = List.first(response.body["snapshots"])
+        snapshot["state"] == "SUCCESS"
+      after
+        _ ->
           assert {:ok, %{status_code: 200}} =
                    Snapshot.delete(@test_url, @repo, @snapshot_5)
 
           assert {:ok, %{status_code: 404}} = Snapshot.get(@test_url, @repo, @snapshot_5)
-        )
       end
     end
   end
