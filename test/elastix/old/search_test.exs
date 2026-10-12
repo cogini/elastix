@@ -22,7 +22,8 @@ defmodule Elastix.Old.SearchTest do
     query: %{match_all: %{}},
     sort: ["_doc"]
   }
-  @old false
+
+  # @old false
 
   setup do
     Index.delete(@test_url, @test_index)
@@ -30,26 +31,26 @@ defmodule Elastix.Old.SearchTest do
     :ok
   end
 
-  test "make_path should make path from id and url" do
-    if @old do
-      path = Search.make_path(@test_index, ["tweet", "product"], ttl: "1d", timeout: 123)
-      assert path == "/#{@test_index}/tweet,product/_search?ttl=1d&timeout=123"
-    end
-  end
+  # test "make_path should make path from id and url" do
+  #   if @old do
+  #     path = Search.make_path(@test_index, ["tweet", "product"], ttl: "1d", timeout: 123)
+  #     assert path == "/#{@test_index}/tweet,product/_search?ttl=1d&timeout=123"
+  #   end
+  # end
 
-  test "make_path should make path that can interchange api type" do
-    if @old do
-      path =
-        Search.make_path(
-          @test_index,
-          ["tweet", "product"],
-          [ttl: "1d", timeout: 123],
-          "_count"
-        )
+  # test "make_path should make path that can interchange api type" do
+  #   if @old do
+  #     path =
+  #       Search.make_path(
+  #         @test_index,
+  #         ["tweet", "product"],
+  #         [ttl: "1d", timeout: 123],
+  #         "_count"
+  #       )
 
-      assert path == "/#{@test_index}/tweet,product/_count?ttl=1d&timeout=123"
-    end
-  end
+  #     assert path == "/#{@test_index}/tweet,product/_count?ttl=1d&timeout=123"
+  #   end
+  # end
 
   test "search should return with status 200" do
     Document.index(@test_url, @test_index, "message", 1, @document_data, refresh: true)

@@ -23,7 +23,8 @@ defmodule Elastix.Old.MappingTest do
     user: 12,
     message: true
   }
-  @old false
+
+  # @old false
 
   setup_all do
     # Query the Elasticsearch instance to determine what version it is running
@@ -53,26 +54,26 @@ defmodule Elastix.Old.MappingTest do
     |> List.to_tuple()
   end
 
-  test "make_path should make url from index names, types, and query params" do
-    if @old do
-      assert Mapping.make_path([@test_index], ["tweet"], version: 34, ttl: "1d") ==
-               "/#{@test_index}/_mapping/tweet?version=34&ttl=1d"
-    end
-  end
+  # test "make_path should make url from index names, types, and query params" do
+  #   if @old do
+  #     assert Mapping.make_path([@test_index], ["tweet"], version: 34, ttl: "1d") ==
+  #              "/#{@test_index}/_mapping/tweet?version=34&ttl=1d"
+  #   end
+  # end
 
-  test "make_all_path should make url from types, and query params" do
-    if @old do
-      assert Mapping.make_all_path(["tweet"], version: 34, ttl: "1d") ==
-               "/_mapping/tweet?version=34&ttl=1d"
-    end
-  end
+  # test "make_all_path should make url from types, and query params" do
+  #   if @old do
+  #     assert Mapping.make_all_path(["tweet"], version: 34, ttl: "1d") ==
+  #              "/_mapping/tweet?version=34&ttl=1d"
+  #   end
+  # end
 
-  test "make_all_path should make url from query params" do
-    if @old do
-      assert Mapping.make_all_path(version: 34, ttl: "1d") ==
-               "/_mapping?version=34&ttl=1d"
-    end
-  end
+  # test "make_all_path should make url from query params" do
+  #   if @old do
+  #     assert Mapping.make_all_path(version: 34, ttl: "1d") ==
+  #              "/_mapping?version=34&ttl=1d"
+  #   end
+  # end
 
   test "put mapping with no index should error" do
     {:ok, response} = Mapping.put(@test_url, @test_index, "message", @mapping)

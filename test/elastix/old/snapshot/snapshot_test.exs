@@ -18,7 +18,8 @@ defmodule Elastix.Old.Snapshot.SnapshotTest do
 
   @test_url Elastix.config(:test_url)
   @test_repository "elastix_test_repository"
-  @old false
+
+  # @old false
 
   setup_all do
     Index.create(@test_url, "elastix_test_index_1", %{})
@@ -57,25 +58,25 @@ defmodule Elastix.Old.Snapshot.SnapshotTest do
     :ok
   end
 
-  describe "constructing paths" do
-    test "make_path should make url from repository name, snapshot name, and query params" do
-      if @old do
-        assert Snapshot.make_path(
-                 @test_repository,
-                 "elastix_test_snapshot_1",
-                 wait_for_completion: true
-               ) ==
-                 "/_snapshot/#{@test_repository}/elastix_test_snapshot_1?wait_for_completion=true"
-      end
-    end
+  # describe "constructing paths" do
+  #   test "make_path should make url from repository name, snapshot name, and query params" do
+  #     if @old do
+  #       assert Snapshot.make_path(
+  #                @test_repository,
+  #                "elastix_test_snapshot_1",
+  #                wait_for_completion: true
+  #              ) ==
+  #                "/_snapshot/#{@test_repository}/elastix_test_snapshot_1?wait_for_completion=true"
+  #     end
+  #   end
 
-    test "make_path should make url from repository name and snapshot name" do
-      if @old do
-        assert Snapshot.make_path(@test_repository, "elastix_test_snapshot_1") ==
-                 "/_snapshot/#{@test_repository}/elastix_test_snapshot_1"
-      end
-    end
-  end
+  #   test "make_path should make url from repository name and snapshot name" do
+  #     if @old do
+  #       assert Snapshot.make_path(@test_repository, "elastix_test_snapshot_1") ==
+  #                "/_snapshot/#{@test_repository}/elastix_test_snapshot_1"
+  #     end
+  #   end
+  # end
 
   describe "creating a snapshot" do
     test "a snapshot of multiple indices in the cluster" do
