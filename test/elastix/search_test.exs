@@ -4,7 +4,7 @@ defmodule Elastix.SearchTest do
   alias Elastix.Search
   alias Elastix.Index
   alias Elastix.Document
-  alias Elastix.HTTP.Response
+  # alias HTTPoison.Response
 
   @test_url Elastix.config(:test_url)
   @test_index Elastix.config(:test_index)
@@ -63,7 +63,7 @@ defmodule Elastix.SearchTest do
     Document.index(@test_url, @test_index, "message", 1, @document_data, refresh: true)
     Document.index(@test_url, @test_index_2, "message", 1, @document_data, refresh: true)
 
-    {:ok, %Response{body: body} = response} =
+    {:ok, %{body: body} = response} =
       Search.search(@test_url, [@test_index, @test_index_2], [], @query_data)
 
     assert response.status_code == 200
